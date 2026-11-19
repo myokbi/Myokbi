@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#c89b3c">
+    <meta name="description" content="OKB Complete Transaction History">
+    <title>OKB - Transaction History (7 Days)</title>
+
+    <!-- ফন্ট এবং সিএসএস -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/common.css">
+
+    <style>
+        :root {
+            --primary-gold: #c89b3c;
+            --primary-gold-dark: #a67c27;
+            --bg-white: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: rgba(200, 155, 60, 0.3);
+            --shadow-3d: 0 10px 25px rgba(200, 155, 60, 0.12);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-white);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 50px;
+        }
+
+        .history-container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        /* হেডার */
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 12px 16px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 16px;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .company-logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-gold);
+        }
+
+        .history-header h2 {
+            margin: 0;
+            font-size: 16px;
+            color: var(--text-main);
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: #f1f5f9;
+            color: var(--text-main);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-gold);
+            color: #fff;
+        }
+
+        /* ইনফো ব্যানার (৭ দিনের হিস্টরি) */
+        .info-banner {
+            background: #fffbeb;
+            border: 1px dashed var(--primary-gold);
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* ট্যাব মেনু (স্লাইডেবল বা গ্রিড) */
+        .history-tabs-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .tab-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 8px 4px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-gold);
+            color: #fff;
+            border-color: var(--primary-gold);
+            box-shadow: 0 4px 10px rgba(200, 155, 60, 0.3);
+        }
+
+        /* হিস্টরি সেকশন প্যানেল */
+        .history-section {
+            display: none;
+        }
+
+        .history-section.active {
+            display: block;
+        }
+
+        .card-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: var(--shadow-3d);
+        }
+
+        .card-box h3 {
+            margin: 0 0 12px 0;
+            font-size: 14px;
+            color: var(--text-main);
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* হিস্টরি আইটেম কার্ড ডিজাইন */
+        .history-item-card {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        .item-row-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .item-row-sub {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 11px;
+        }
+
+        .status-badge {
+            font-size: 9px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+
+        .status-pending { background: rgba(234, 179, 8, 0.15); color: #ca8a04; }
+        .status-approved { background: rgba(34, 197, 94, 0.15); color: #16a34a; }
+        .status-rejected { background: rgba(239, 68, 68, 0.15); color: #dc2626; }
+    </style>
+</head>
+
+<body>
+
+<div class="history-container">
+
+    <!-- হেডার -->
+    <header class="history-header">
+        <div class="header-brand">
+            <img src="assets/logo/okb.png" alt="OKB Logo" class="company-logo">
+            <h2>Activity & History</h2>
+        </div>
+        <a href="dashboard.html" class="back-btn" aria-label="Back">✕</a>
+    </header>
+
+    <!-- নোটিশ ব্যানার -->
+    <div class="info-banner">
+        📅 এখানে শুধুমাত্র বিগত ৭ দিনের সমস্ত ট্রানজেকশন ও কাজের বিবরণ দেখানো হচ্ছে।
+    </div>
+
+    <!-- ট্যাব মেনু -->
+    <div class="history-tabs-grid">
+        <button type="button" class="tab-btn active" onclick="switchHistoryTab('deposit', this)">Deposit</button>
+        <button type="button" class="tab-btn" onclick="switchHistoryTab('withdraw', this)">Withdraw</button>
+        <button type="button" class="tab-btn" onclick="switchHistoryTab('work', this)">Work Tasks</button>
+        <button type="button" class="tab-btn" onclick="switchHistoryTab('p2p', this)">P2P Transfer</button>
+        <button type="button" class="tab-btn" onclick="switchHistoryTab('refer', this)">Referral Log</button>
+    </div>
+
+    <!-- ================= 1. DEPOSIT HISTORY ================= -->
+    <section id="depositTab" class="history-section active">
+        <div class="card-box">
+            <h3>Deposit History <span>(7 Days)</span></h3>
+            <div class="list-container" id="depositHistoryList">
+                <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin: 0;">Loading...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 2. WITHDRAW HISTORY ================= -->
+    <section id="withdrawTab" class="history-section">
+        <div class="card-box">
+            <h3>Withdraw History <span>(7 Days)</span></h3>
+            <div class="list-container" id="withdrawHistoryList">
+                <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin: 0;">Loading...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 3. WORK TASKS HISTORY ================= -->
+    <section id="workTab" class="history-section">
+        <div class="card-box">
+            <h3>Work Submissions <span>(7 Days)</span></h3>
+            <div class="list-container" id="workHistoryList">
+                <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin: 0;">Loading...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 4. P2P TRANSFER HISTORY ================= -->
+    <section id="p2pTab" class="history-section">
+        <div class="card-box">
+            <h3>P2P Send Money <span>(7 Days)</span></h3>
+            <div class="list-container" id="p2pHistoryList">
+                <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin: 0;">Loading...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 5. REFERRAL LOG ================= -->
+    <section id="referTab" class="history-section">
+        <div class="card-box">
+            <h3>Referral Activity <span>(7 Days)</span></h3>
+            <div class="list-container" id="referHistoryList">
+                <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin: 0;">Loading...</p>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/coin-calculator.js"></script>
+
+
+<!-- ফায়ারবেস এবং জাভাস্ক্রিপ্ট রিয়েলটাইম লজিক -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+        databaseURL: "https://okb2-ee83b-default-rtdb.firebaseio.com/"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const userId = localStorage.getItem("okbUserId") || "default_user";
+
+    // ৭ দিনের মিলিসেকেন্ড হিসাব (৭ * ২৪ * ৬০ * ৬০ * ১০০০)
+    const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+    const currentTime = Date.now();
+
+    // ট্যাব সুইচ ফাংশন
+    window.switchHistoryTab = function(tabName, element) {
+        document.querySelectorAll('.history-section').forEach(sec => sec.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+        document.getElementById(tabName + 'Tab').classList.add('active');
+        element.classList.add('active');
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        
+        // ১. ডিপোজিট হিস্টরি লোড (৭ দিনের ফিল্টারসহ)
+        onValue(ref(db, `deposits/${userId}`), (snapshot) => {
+            const listEl = document.getElementById("depositHistoryList");
+            listEl.innerHTML = "";
+            let count = 0;
+
+            if(snapshot.exists()) {
+                snapshot.forEach((childSnap) => {
+                    const item = childSnap.val();
+                    if(currentTime - item.timestamp <= SEVEN_DAYS_MS) {
+                        count++;
+                        let statusClass = item.status === "Approved" ? "status-approved" : (item.status === "Rejected" ? "status-rejected" : "status-pending");
+                        listEl.innerHTML += `
+                            <div class="history-item-card">
+                                <div class="item-row-top">
+                                    <span>${item.gateway} - ${item.amount} BDT</span>
+                                    <span class="status-badge ${statusClass}">${item.status}</span>
+                                </div>
+                                <div class="item-row-sub">
+                                    <span>Trx: <strong>${item.trxId}</strong></span>
+                                    <span>${new Date(item.timestamp).toLocaleDateString()}</span>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+            }
+            if(count === 0) listEl.innerHTML = `<p style="font-size: 12px; color: var(--text-muted); text-align: center; margin: 0;">No deposit history in last 7 days.</p>`;
+        });
+
+        // ২. উইথড্র হিস্টরি লোড (৭ দিনের ফিল্টারসহ)
+        onValue(ref(db, `withdraws/${userId}`), (snapshot) => {
+            const listEl = document.getElementById("withdrawHistoryList");
+            listEl.innerHTML = "";
+            let count = 0;
+
+            if(snapshot.exists()) {
+                snapshot.forEach((childSnap) => {
+                    const item = childSnap.val();
+                    if(currentTime - item.timestamp <= SEVEN_DAYS_MS) {
+                        count++;
+                        let statusClass = item.status === "Approved" ? "status-approved" : (item.status === "Rejected" ? "status-rejected" : "status-pending");
+                        listEl.innerHTML += `
+                            <div class="history-item-card">
+                                <div class="item-row-top">
+                                    <span>${item.method} - ${item.amount} BDT</span>
+                                    <span class="status-badge ${statusClass}">${item.status}</span>
+                                </div>
+                                <div class="item-row-sub">
+                                    <span>Acc: <strong>${item.accountNumber}</strong></span>
+                                    <span>${new Date(item.timestamp).toLocaleDateString()}</span>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+            }
+            if(count === 0) listEl.innerHTML = `<p style="font-size: 12px; color: var(--text-muted); text-align: center; margin: 0;">No withdraw history in last 7 days.</p>`;
+        });
+
+        // ৩. ওয়ার্ক টাস্ক সাবমিশন হিস্টরি (প্রিমিয়াম + ফ্রি উভয়ের সাবমিশন চেক করা যেতে পারে)
+        onValue(ref(db, `workSubmissions/${userId}`), (snapshot) => {
+            const listEl = document.getElementById("workHistoryList");
+            listEl.innerHTML = "";
+            let count = 0;
+
+            if(snapshot.exists()) {
+                snapshot.forEach((childSnap) => {
+                    const item = childSnap.val();
+                    if(currentTime - item.timestamp <= SEVEN_DAYS_MS) {
+                        count++;
+                        let statusClass = item.status === "Approved" ? "status-approved" : (item.status === "Rejected" ? "status-rejected" : "status-pending");
+                        listEl.innerHTML += `
+                            <div class="history-item-card">
+                                <div class="item-row-top">
+                                    <a href="${item.sheetUrl}" target="_blank" style="color:var(--primary-gold-dark); text-decoration:none;">📄 Google Sheet Task</a>
+                                    <span class="status-badge ${statusClass}">${item.status}</span>
+                                </div>
+                                <div class="item-row-sub">
+                                    <span>Task Submission</span>
+                                    <span>${new Date(item.timestamp).toLocaleDateString()}</span>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+            }
+            if(count === 0) listEl.innerHTML = `<p style="font-size: 12px; color: var(--text-muted); text-align: center; margin: 0;">No work history in last 7 days.</p>`;
+        });
+
+        // ৪. P2P সেন্ড মানি হিস্টরি লোড
+        onValue(ref(db, `p2pTransactions/${userId}`), (snapshot) => {
+            const listEl = document.getElementById("p2pHistoryList");
+            listEl.innerHTML = "";
+            let count = 0;
+
+            if(snapshot.exists()) {
+                snapshot.forEach((childSnap) => {
+                    const item = childSnap.val();
+                    if(currentTime - item.timestamp <= SEVEN_DAYS_MS) {
+                        count++;
+                        listEl.innerHTML += `
+                            <div class="history-item-card">
+                                <div class="item-row-top">
+                                    <span>To Ref: ${item.recipientCode}</span>
+                                    <span style="color:#dc2626; font-weight:700;">-${item.totalDeduction} BDT</span>
+                                </div>
+                                <div class="item-row-sub">
+                                    <span>TRX: <strong>${item.trxId}</strong></span>
+                                    <span>${new Date(item.timestamp).toLocaleDateString()}</span>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+            }
+            if(count === 0) listEl.innerHTML = `<p style="font-size: 12px; color: var(--text-muted); text-align: center; margin: 0;">No P2P transfers in last 7 days.</p>`;
+        });
+
+        // ৫. রেফারাল লগ হিস্টরি (যারা এই ইউজারের কোড ব্যবহার করে জয়েন করেছে)
+        onValue(ref(db, 'users'), (snapshot) => {
+            const listEl = document.getElementById("referHistoryList");
+            listEl.innerHTML = "";
+            let count = 0;
+
+            if(snapshot.exists()) {
+                // ইউজারের রেফার কোড বের করে ফিল্টার করা
+                get(ref(db, `users/${userId}/referCode`)).then((codeSnap) => {
+                    const myCode = codeSnap.val() || `OKB-${userId.toUpperCase()}`;
+
+                    snapshot.forEach((childSnap) => {
+                        const otherUser = childSnap.val();
+                        // যদি এই ইউজারের রেফারে জয়েন করে থাকে এবং ৭ দিনের মধ্যে হয়
+                        if(otherUser.referredBy && otherUser.referredBy === myCode) {
+                            const regTime = otherUser.timestamp || currentTime; // ফলব্যাক টাইম
+                            if(currentTime - regTime <= SEVEN_DAYS_MS) {
+                                count++;
+                                const isPrem = otherUser.level && otherUser.level.includes("Package");
+                                listEl.innerHTML += `
+                                    <div class="history-item-card">
+                                        <div class="item-row-top">
+                                            <span>${otherUser.name || "Referred User"}</span>
+                                            <span style="color:var(--primary-gold-dark); font-weight:700;">${isPrem ? "+700 BDT Bonus" : "+10 BDT Bonus"}</span>
+                                        </div>
+                                        <div class="item-row-sub">
+                                            <span>Type: ${isPrem ? "Premium" : "Free"}</span>
+                                            <span>${new Date(regTime).toLocaleDateString()}</span>
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                        }
+                    });
+
+                    if(count === 0) {
+                        listEl.innerHTML = `<p style="font-size: 12px; color: var(--text-muted); text-align: center; margin: 0;">No referral logs in last 7 days.</p>`;
+                    }
+                });
+            } else {
+                listEl.innerHTML = `<p style="font-size: 12px; color: var(--text-muted); text-align: center; margin: 0;">No referral logs in last 7 days.</p>`;
+            }
+        });
+
+    });
+</script>
+
+</body>
+</html>

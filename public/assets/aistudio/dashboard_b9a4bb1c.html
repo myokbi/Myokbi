@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#c89b3c">
+    <meta name="description" content="OKB Main Dashboard - Pro 3D Gold Edition">
+    <title>OKB Dashboard</title>
+
+    <!-- ফন্ট এবং এক্সটার্নাল সিএসএস -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/common.css">
+
+    <!-- প্রিমিয়াম 3D গোল্ডেন ডিজাইন ও রিয়েল-টাইম স্টাইলিং -->
+    <style>
+        :root {
+            --primary-gold: #f59e0b;
+            --primary-gold-dark: #d97706;
+            --gold-light: #fef3c7;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: rgba(245, 158, 11, 0.35);
+            --shadow-3d: 0 12px 30px -10px rgba(217, 119, 6, 0.25), inset 0 2px 4px rgba(255, 255, 255, 0.8);
+            --shadow-card: 0 10px 25px rgba(15, 23, 42, 0.06);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fcfbf9;
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 90px;
+            overflow-x: hidden;
+        }
+
+        .dashboard-page-wrapper {
+            position: relative;
+            min-height: 100vh;
+            background: 
+                radial-gradient(circle at 10% 15%, rgba(245, 158, 11, 0.22) 0%, transparent 40%),
+                radial-gradient(circle at 90% 75%, rgba(217, 119, 6, 0.18) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(252, 211, 77, 0.12) 0%, transparent 60%),
+                #fffdfa;
+            padding-bottom: 30px;
+        }
+
+        .dashboard {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 16px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* হেডার ডিজাইন */
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(254, 243, 199, 0.85));
+            padding: 12px 16px;
+            border-radius: 22px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-3d);
+            margin-bottom: 16px;
+            backdrop-filter: blur(12px);
+        }
+
+        .header-profile-button img, 
+        .header-logo img {
+            width: 46px !important;
+            height: 46px !important;
+            min-width: 46px !important;
+            min-height: 46px !important;
+            border-radius: 50% !important;
+            object-fit: cover !important;
+            display: block;
+            border: 2px solid var(--primary-gold);
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
+            background: #fff;
+        }
+
+        .header-title {
+            text-align: center;
+        }
+
+        .header-title p {
+            margin: 0;
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .header-title strong {
+            font-size: 16px;
+            color: var(--primary-gold-dark);
+            font-weight: 800;
+        }
+
+        /* ডাইনামিক নোটিশ ব্যানার */
+        .live-notice-banner {
+            background: linear-gradient(135deg, #fef3c7, #fffbeb);
+            border: 1px solid var(--primary-gold);
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            display: none; /* ফায়ারবেস থেকে ডেটা আসলে শো করবে */
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-card);
+        }
+
+        .notice-text-wrap h5 {
+            margin: 0 0 2px 0;
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--primary-gold-dark);
+        }
+
+        .notice-text-wrap p {
+            margin: 0;
+            font-size: 11px;
+            color: var(--text-main);
+        }
+
+        .notice-close-btn {
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-weight: bold;
+        }
+
+        /* ব্যানার স্লাইডার */
+        .dashboard-banner {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 15px 35px rgba(217, 119, 6, 0.2);
+            height: 180px;
+            background: #1e293b;
+            border: 1px solid var(--border-color);
+        }
+
+        .banner-slide {
+            display: none;
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .banner-slide.active {
+            display: block;
+        }
+
+        .banner-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .banner-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.75));
+        }
+
+        .banner-content {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            right: 16px;
+            z-index: 2;
+        }
+
+        .banner-badge {
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-gold-dark));
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+
+        .banner-content h2 {
+            margin: 6px 0 4px;
+            font-size: 18px;
+            color: #fff;
+            font-weight: 800;
+        }
+
+        .banner-content p {
+            margin: 0;
+            font-size: 12px;
+            color: #e2e8f0;
+        }
+
+        .banner-dots {
+            position: absolute;
+            bottom: 10px;
+            right: 16px;
+            display: flex;
+            gap: 6px;
+            z-index: 3;
+        }
+
+        .banner-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .banner-dot.active {
+            background: var(--primary-gold);
+            width: 22px;
+            border-radius: 4px;
+        }
+
+        /* কুইক অ্যাকশন রো */
+        .quick-actions-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .quick-action {
+            flex: 1;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 14px 16px;
+            border-radius: 16px;
+            text-decoration: none;
+            color: var(--text-main);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: var(--shadow-card);
+            backdrop-filter: blur(10px);
+        }
+
+        /* মূল ড্যাশবোর্ড বাটন গ্রিড */
+        .dashboard-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-action-button {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 30px;
+            padding: 18px 10px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            box-shadow: var(--shadow-card);
+            backdrop-filter: blur(10px);
+            transition: 0.2s;
+        }
+
+        .dashboard-action-button:hover, .dashboard-action-button.active {
+            background: linear-gradient(135deg, rgba(254, 243, 199, 0.9), rgba(255, 255, 255, 0.95));
+            border-color: var(--primary-gold);
+            transform: translateY(-2px);
+        }
+
+        .dashboard-icon {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(145deg, #ffffff, #fef3c7);
+            border: 2px solid var(--primary-gold);
+            border-radius: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 15px rgba(217, 119, 6, 0.2);
+        }
+
+        .dashboard-icon img {
+            width: 70px !important;
+            height: 70px !important;
+            object-fit: contain !important;
+            display: block;
+        }
+
+        .dashboard-action-button span:last-child {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* ভাসমান হেল্পলাইন এজেন্ট উইজেট */
+        .floating-agent-widget {
+            position: fixed;
+            bottom: 85px;
+            right: 20px;
+            z-index: 999;
+        }
+
+        .agent-float-btn {
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-gold-dark));
+            color: #fff;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 8px 25px rgba(217, 119, 6, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 24px;
+            transition: 0.3s;
+        }
+
+        .agent-float-btn:hover {
+            transform: scale(1.08);
+        }
+
+        /* এজেন্ট চ্যাট মোডাল */
+        .agent-modal {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 320px;
+            background: #fff;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1001;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .agent-modal-header {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: #fff;
+            padding: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .agent-modal-header h4 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .agent-modal-body {
+            padding: 14px;
+            max-height: 250px;
+            overflow-y: auto;
+            background: #f8fafc;
+            font-size: 12px;
+        }
+
+        .agent-modal-footer {
+            padding: 10px 14px;
+            background: #fff;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 8px;
+        }
+
+        .agent-modal-footer select, .agent-modal-footer input {
+            flex: 1;
+            padding: 8px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 11px;
+            outline: none;
+        }
+
+        .agent-modal-footer button {
+            background: var(--primary-gold-dark);
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        /* বটম ন্যাভবার */
+        .bottom-navigation {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0 8px 0;
+            z-index: 1000;
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-muted);
+            gap: 4px;
+        }
+
+        .bottom-nav-item.active, .bottom-nav-item:hover {
+            color: var(--primary-gold-dark);
+        }
+
+        .bottom-nav-icon img {
+            width: 26px !important;
+            height: 26px !important;
+            object-fit: contain !important;
+        }
+
+        .bottom-nav-label {
+            font-size: 11px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="dashboard-page-wrapper">
+<main class="dashboard">
+
+    <!-- TOP HEADER -->
+    <header class="dashboard-header">
+        <a href="drawer-menu.html" class="header-profile-button" aria-label="Open Profile">
+            <img src="https://i.postimg.cc/KYWyy5dN/menu.png" alt="Menu">
+        </a>
+        
+        <div class="header-title">
+            <p>Main Balance</p>
+            <strong id="userMainBalance">0.00 BDT</strong>
+        </div>
+       <a href="" class="header-profile-button" aria-label="Open Profile">
+            <!-- ফায়ারবেস থেকে ইউজারের আসল প্রোফাইল ছবি ডাইনামিকালি লোড হবে -->
+            <img id="userHeaderAvatar" src="https://i.postimg.cc/k4tPMbmh/profile.jpg" alt="Profile">
+        </a>
+    </header>
+
+    <!-- ডাইনামিক নোটিশ ব্যানার (work/notice.html সিংক ও ক্রস বাটন) -->
+    <div id="liveNoticeBanner" class="live-notice-banner">
+        <div class="notice-text-wrap">
+            <h5 id="noticeTitle">📢 নতুন নোটিশ</h5>
+            <p id="noticeDesc">লোডিং নোটিশ বিবরণ...</p>
+        </div>
+        <button type="button" class="notice-close-btn" id="closeNoticeBtn" aria-label="Close Notice">✕</button>
+    </div>
+
+    <!-- LIVE BANNER -->
+    <section class="dashboard-banner" aria-label="OKB promotional banner">
+        <div class="banner-slider" id="bannerSlider">
+            <article class="banner-slide active">
+                <img src="https://i.postimg.cc/PJmgXXhK/banner3.jpg" alt="OKB Promotion">
+                <div class="banner-overlay"></div>
+                <div class="banner-content">
+                    <span class="banner-badge">OKB LIVE</span>
+                    <h2>Work. Earn. Grow.</h2>
+                    <p>Explore your OKB dashboard and discover new opportunities.</p>
+                </div>
+            </article>
+
+            <article class="banner-slide">
+                <img src="https://i.postimg.cc/PJmgXXhK/banner3.jpg" alt="OKB Rewards">
+                <div class="banner-overlay"></div>
+                <div class="banner-content">
+                    <span class="banner-badge">REWARDS</span>
+                    <h2>Build Your Rewards</h2>
+                    <p>Complete available activities and grow your account.</p>
+                </div>
+            </article>
+
+            <article class="banner-slide">
+                <img src="https://i.postimg.cc/PJmgXXhK/banner3.jpg" alt="OKB Market">
+                <div class="banner-overlay"></div>
+                <div class="banner-content">
+                    <span class="banner-badge">MARKET</span>
+                    <h2>Explore OKB Market</h2>
+                    <p>Follow live market information from your dashboard.</p>
+                </div>
+            </article>
+        </div>
+
+        <div class="banner-dots" id="bannerDots" aria-label="Banner navigation">
+            <button type="button" class="banner-dot active" data-slide="0" aria-label="Show banner 1"></button>
+            <button type="button" class="banner-dot" data-slide="1" aria-label="Show banner 2"></button>
+            <button type="button" class="banner-dot" data-slide="2" aria-label="Show banner 3"></button>
+        </div>
+    </section>
+
+    <!-- QUICK STATS MENU -->
+    <div class="quick-actions-row">
+        <a href="leader.html" class="quick-action">
+            <span>Worker List</span>
+            <strong>🏆 →</strong>
+        </a>
+        <a href="agent.html" class="quick-action">
+            <span>Agent</span>
+            <strong>→</strong>
+        </a>
+    </div>
+
+    <!-- MAIN DASHBOARD BUTTONS -->
+    <section class="dashboard-buttons" aria-label="Dashboard actions">
+        <a href="refer.html" class="dashboard-action-button active">
+            <div class="dashboard-icon"><img src="https://i.postimg.cc/nzQfVDJG/offar.png" alt="offer"></div>
+            <span>Share</span>
+        </a>
+        <a href="all_tasks.html" class="dashboard-action-button">
+            <div class="dashboard-icon"><img src="https://i.postimg.cc/hvWWXtD6/wor.png" alt="Work"></div>
+            <span>All list</span>
+        </a>
+        <a href="../work/tasks.html" class="dashboard-action-button">
+            <div class="dashboard-icon"><img src="https://i.postimg.cc/Pq7kkMBm/my.png" alt="Market"></div>
+            <span>My.Jobs</span>
+        </a>
+        <a href="crypto.html" class="dashboard-action-button">
+            <div class="dashboard-icon"><img src="https://i.postimg.cc/Hx71Wyg2/pr.png" alt="premium"></div>
+            <span>Crypto</span>
+        </a>
+        <a href="deposit-withdraw.html" class="dashboard-action-button">
+            <div class="dashboard-icon"><img src="https://i.postimg.cc/7h885ZHc/w.png" alt="Withdraw"></div>
+            <span>Withdraw</span>
+        </a>
+        <a href="p2p.html" class="dashboard-action-button">
+            <div class="dashboard-icon"><img src="https://i.postimg.cc/76TrP2kK/p2p.png" alt="p2p"></div>
+            <span>SEND MAIN</span>
+        </a>
+    </section>
+
+    <!-- ভাসমান হেল্পলাইন এজেন্ট উইজেট -->
+    <div class="floating-agent-widget">
+        <div class="agent-float-btn" id="agentToggleBtn" title="এজেন্টের সাথে কথা বলুন">💬</div>
+    </div>
+
+    <!-- এজেন্ট চ্যাট মোডাল প্যানেল -->
+    <div class="agent-modal" id="agentModal">
+        <div class="agent-modal-header">
+            <h4>OKB লাইভ এজেন্ট সাপোর্ট</h4>
+            <button type="button" id="closeAgentModal" style="background:none; border:none; color:#fff; font-size:16px; cursor:pointer;">✕</button>
+        </div>
+        <div class="agent-modal-body" id="agentChatBox">
+            <div style="color: var(--text-muted); margin-bottom: 8px;">আপনার সমস্যাটি সিলেক্ট করুন এবং এজেন্টের সাথে লাইভ চ্যাট করুন (চ্যাট ৩০ মিনিট পর স্বয়ংক্রিয়ভাবে মুছে যাবে):</div>
+            <div id="chatMessagesHistory" style="display:flex; flex-direction:column; gap:6px;"></div>
+        </div>
+        <div class="agent-modal-footer">
+            <select id="problemCategory">
+                <option value="Deposit Issue">ডিপোজিট সমস্যা</option>
+                <option value="Withdrawal Issue">উইথড্র সমস্যা</option>
+                <option value="Task Verification">টাস্ক সমস্যা</option>
+                <option value="Other">অন্যান্য সমস্যা</option>
+            </select>
+            <input type="text" id="agentInputMsg" placeholder="আপনার বার্তা লিখুন...">
+            <button type="button" id="sendAgentMsg">পাঠান</button>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav class="bottom-navigation" aria-label="Main navigation">
+        <a href="dashboard.html" class="bottom-nav-item active" aria-label="Home">
+            <span class="bottom-nav-icon"><img src="https://i.postimg.cc/XvP00gTB/home.png" alt="Home"></span>
+            <span class="bottom-nav-label">Home</span>
+        </a>
+        <a href="helpline.html" class="bottom-nav-item" aria-label="Helpline">
+            <span class="bottom-nav-icon"><img src="https://i.postimg.cc/XvP00gT5/help.png" alt="Help"></span>
+            <span class="bottom-nav-label">Helpline</span>
+        </a>
+        <a href="history.html" class="bottom-nav-item" aria-label="User History">
+            <span class="bottom-nav-icon"><img src="https://i.postimg.cc/yNGzzTwS/history.png" alt="History"></span>
+            <span class="bottom-nav-label">History</span>
+        </a>
+    </nav>
+
+</main>
+</div>
+
+<!-- JAVASCRIPT & FIREBASE REALTIME SYNC (30 Mins Auto-Delete & Notice Banner) -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, onValue, push, set, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+        databaseURL: "https://okb2-ee83b-default-rtdb.firebaseio.com/"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const userId = localStorage.getItem("okbUserId") || "guest_user";
+
+        // ১. ব্যানার স্লাইডার লজিক
+        const slides = document.querySelectorAll(".banner-slide");
+        const dots = document.querySelectorAll(".banner-dot");
+        
+        if (slides.length > 0) {
+            let currentSlide = 0;
+            function showSlide(index) {
+                slides.forEach((slide, i) => slide.classList.toggle("active", i === index));
+                dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+                currentSlide = index;
+            }
+            dots.forEach((dot) => {
+                dot.addEventListener("click", () => showSlide(Number(dot.dataset.slide)));
+            });
+            setInterval(() => showSlide((currentSlide + 1) % slides.length), 6000);
+        }
+
+        // ২. রিয়েল-টাইম ইউজার ব্যালেন্স এবং প্রোফাইল ছবি সিংক
+        const userRef = ref(db, 'users/' + userId);
+        onValue(userRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                // ব্যালেন্স আপডেট
+                const balance = Number(data.balance || data.mainBalance || 0);
+                const balanceEl = document.getElementById("userMainBalance");
+                if (balanceEl) {
+                    balanceEl.innerText = balance.toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }) + " BDT";
+                }
+
+                // অ্যাডমিন প্রদত্ত বা ইউজার সেট করা ছবি হেদারে শো করা
+                if (data.photoUrl && data.photoUrl.trim() !== "") {
+                    const avatarEl = document.getElementById("userHeaderAvatar");
+                    if (avatarEl) avatarEl.src = data.photoUrl;
+                }
+            }
+        });
+
+        // ৩. নোটিশ ব্যানার সিংক (work/notice.html থেকে নোটিশ দেখানো)
+        const noticeRef = ref(db, 'platform/activeNotice');
+        onValue(noticeRef, (snapshot) => {
+            const noticeData = snapshot.val();
+            const banner = document.getElementById("liveNoticeBanner");
+            if (noticeData && noticeData.text) {
+                document.getElementById("noticeTitle").innerText = noticeData.title || "📢 জরুরি নোটিশ";
+                document.getElementById("noticeDesc").innerText = noticeData.text;
+                banner.style.display = "flex";
+            } else {
+                banner.style.display = "none";
+            }
+        });
+
+        document.getElementById("closeNoticeBtn").addEventListener("click", () => {
+            document.getElementById("liveNoticeBanner").style.display = "none";
+        });
+
+        // ৪. ভাসমান এজেন্ট চ্যাট উইজেট এবং ৩০ মিনিট অটো-ডিলিট সিস্টেম
+        const agentToggleBtn = document.getElementById("agentToggleBtn");
+        const agentModal = document.getElementById("agentModal");
+        const closeAgentModal = document.getElementById("closeAgentModal");
+
+        agentToggleBtn.addEventListener("click", () => {
+            agentModal.style.display = agentModal.style.display === "flex" ? "none" : "flex";
+        });
+        closeAgentModal.addEventListener("click", () => {
+            agentModal.style.display = "none";
+        });
+
+        // ফায়ারবেস এজেন্ট চ্যাট সিংক ও ৩০ মিনিট এক্সপায়ার চেক
+        const chatRef = ref(db, 'agentChats/' + userId);
+        onValue(chatRef, (snapshot) => {
+            const chatBox = document.getElementById("chatMessagesHistory");
+            chatBox.innerHTML = "";
+            const now = Date.now();
+            const THIRTY_MINUTES = 30 * 60 * 1000;
+
+            if (snapshot.exists()) {
+                snapshot.forEach((childSnap) => {
+                    const msg = childSnap.val();
+                    // ৩০ মিনিট পার হলে মেসেজ অটো রিমুভ করা
+                    if (now - msg.timestamp > THIRTY_MINUTES) {
+                        remove(ref(db, 'agentChats/' + userId + '/' + childSnap.key));
+                        return;
+                    }
+
+                    const div = document.createElement("div");
+                    div.style.padding = "6px 8px";
+                    div.style.borderRadius = "6px";
+                    div.style.background = msg.sender === 'user' ? "#fef3c7" : "#e2e8f0";
+                    div.style.textAlign = msg.sender === 'user' ? "right" : "left";
+                    div.innerHTML = `<strong>${msg.sender === 'user' ? 'আপনি' : 'এজেন্ট'}:</strong> ${msg.text} <div style="font-size:9px; color:#64748b;">${new Date(msg.timestamp).toLocaleTimeString()}</div>`;
+                    chatBox.appendChild(div);
+                });
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        });
+
+        // এজেন্ট মেসেজ পাঠানো
+        document.getElementById("sendAgentMsg").addEventListener("click", () => {
+            const category = document.getElementById("problemCategory").value;
+            const input = document.getElementById("agentInputMsg");
+            const text = input.value.trim();
+
+            if (!text) return;
+
+            const chatListRef = ref(db, 'agentChats/' + userId);
+            const newMsgRef = push(chatListRef);
+            set(newMsgRef, {
+                category: category,
+                sender: 'user',
+                text: text,
+                timestamp: Date.now()
+            });
+
+            input.value = "";
+        });
+    });
+</script>
+
+</body>
+</html>

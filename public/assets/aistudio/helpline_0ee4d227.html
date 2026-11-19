@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#c89b3c">
+    <meta name="description" content="OKB Live Support & Helpline">
+    <title>OKB - Live Helpline</title>
+
+    <!-- ফন্ট এবং সিএসএস -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/common.css">
+
+    <style>
+        :root {
+            --primary-gold: #c89b3c;
+            --primary-gold-dark: #a67c27;
+            --bg-white: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: rgba(200, 155, 60, 0.3);
+            --shadow-3d: 0 10px 25px rgba(200, 155, 60, 0.12);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-white);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .helpline-container {
+            max-width: 480px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            box-sizing: border-box;
+            padding: 12px;
+        }
+
+        /* হেডার */
+        .help-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 12px 16px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 10px;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .company-logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-gold);
+        }
+
+        .help-header h2 {
+            margin: 0;
+            font-size: 15px;
+            color: var(--text-main);
+        }
+
+        .help-header p {
+            margin: 0;
+            font-size: 10px;
+            color: #16a34a;
+            font-weight: 600;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: #f1f5f9;
+            color: var(--text-main);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-gold);
+            color: #fff;
+        }
+
+        /* সমস্যার ক্যাটাগরি আইকন বা ট্যাগ প্যানেল */
+        .topics-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .topics-panel span {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .topics-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .topic-chip {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            color: var(--text-main);
+        }
+
+        .topic-chip.selected {
+            background: var(--primary-gold);
+            color: #fff;
+            border-color: var(--primary-gold);
+        }
+
+        /* চ্যাট বক্স বডি */
+        .chat-messages-box {
+            flex: 1;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            margin-bottom: 10px;
+        }
+
+        .chat-bubble {
+            max-width: 75%;
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-size: 12px;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+
+        .chat-bubble.user {
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-gold-dark));
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-bubble.agent {
+            background: #f1f5f9;
+            color: var(--text-main);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        .chat-bubble.system {
+            background: #fffbeb;
+            color: #ca8a04;
+            align-self: center;
+            text-align: center;
+            font-size: 11px;
+            border: 1px dashed var(--primary-gold);
+            width: 90%;
+            max-width: 100%;
+        }
+
+        .chat-bubble img, .chat-bubble a {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 4px;
+            display: block;
+        }
+
+        /* চ্যাট ইনপুট ফুটার */
+        .chat-input-footer {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .chat-input-footer input[type="text"] {
+            flex: 1;
+            border: none;
+            background: #f8fafc;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            outline: none;
+            border: 1px solid var(--border-color);
+        }
+
+        .file-upload-btn, .send-msg-btn {
+            background: #f1f5f9;
+            border: 1px solid var(--border-color);
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--text-main);
+            transition: 0.2s;
+        }
+
+        .send-msg-btn {
+            background: var(--primary-gold);
+            color: #fff;
+            border-color: var(--primary-gold);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="helpline-container">
+
+    <!-- হেডার -->
+    <header class="help-header">
+        <div class="header-brand">
+            <img src="assets/okbi.png" alt="OKB Logo" class="company-logo">
+            <div>
+                <h2>OKB Live Support</h2>
+                <p>● Agent Online</p>
+            </div>
+        </div>
+        <a href="dashboard.html" class="back-btn" aria-label="Back">✕</a>
+    </header>
+
+    <!-- সমস্যার ক্যাটাগরি সিলেক্ট ট্যাগ প্যানেল -->
+    <div class="topics-panel" id="topicsPanel">
+        <span>আপনার সমস্যাটি সিলেক্ট করুন:</span>
+        <div class="topics-grid">
+            <div class="topic-chip" onclick="selectTopic('উইথড্র সমস্যা', this)">💳 উইথড্র সমস্যা</div>
+            <div class="topic-chip" onclick="selectTopic('সেন্ড মানি সমস্যা', this)">💸 সেন্ড মানি সমস্যা</div>
+            <div class="topic-chip" onclick="selectTopic('কাজের সমস্যা', this)">💼 কাজের সমস্যা</div>
+            <div class="topic-chip" onclick="selectTopic('প্রিমিয়াম সমস্যা', this)">💎 প্রিমিয়াম সমস্যা</div>
+            <div class="topic-chip" onclick="selectTopic('ডিপোজিট সমস্যা', this)">💰 ডিপোজিট সমস্যা</div>
+        </div>
+    </div>
+
+    <!-- চ্যাট মেসেজ বক্স -->
+    <div class="chat-messages-box" id="chatMessagesBox">
+        <div class="chat-bubble system">
+            স্বাগতম! OKB সাপোর্টে আপনাকে স্বাগতম। আপনার সমস্যাটি উপরে থেকে সিলেক্ট করে মেসেজ করুন।
+        </div>
+    </div>
+
+    <!-- মেসেজ সেন্ড ফুটার -->
+    <form class="chat-input-footer" id="chatForm">
+        <label class="file-upload-btn" title="Upload Image/File">
+            📁 <input type="file" id="mediaFileInput" accept="image/*" style="display: none;">
+        </label>
+        <input type="text" id="chatInputText" placeholder="আপনার মেসেজ লিখুন..." required>
+        <button type="submit" class="send-msg-btn">➤</button>
+    </form>
+
+</div>
+
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/coin-calculator.js"></script>
+
+
+<!-- ফায়ারবেস এবং জাভাস্ক্রিপ্ট রিয়েলটাইম লজিক -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, push, set, onValue, get, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+        databaseURL: "https://okb2-ee83b-default-rtdb.firebaseio.com/"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const userId = localStorage.getItem("okbUserId") || "default_user";
+    let selectedTopicName = "সাধারণ জিজ্ঞাসা";
+    let hasSentFirstMessage = false;
+
+    // টপিক সিলেক্ট ফাংশন
+    window.selectTopic = function(topic, element) {
+        document.querySelectorAll('.topic-chip').forEach(el => el.classList.remove('selected'));
+        element.classList.add('selected');
+        selectedTopicName = topic;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const chatBox = document.getElementById("chatMessagesBox");
+        const messagesRef = ref(db, `helplineChats/${userId}/messages`);
+
+        // ফায়ারবেস থেকে রিয়েলটাইম চ্যাট মেসেজ লোড করা
+        onValue(messagesRef, (snapshot) => {
+            chatBox.innerHTML = `
+                <div class="chat-bubble system">
+                    স্বাগতম! OKB সাপোর্টে আপনাকে স্বাগতম। আপনার সমস্যাটি উপরে থেকে সিলেক্ট করে মেসেজ করুন।
+                </div>
+            `;
+
+            if(snapshot.exists()) {
+                hasSentFirstMessage = true; // অলরেডি মেসেজ পাঠানো হয়েছে
+                document.getElementById("topicsPanel").style.display = "none"; // টপিক প্যানেল হাইড করে দেওয়া
+
+                snapshot.forEach((childSnap) => {
+                    const msg = childSnap.val();
+                    let bubbleClass = "chat-bubble user";
+                    if(msg.sender === "Agent") bubbleClass = "chat-bubble agent";
+                    if(msg.sender === "Bot") bubbleClass = "chat-bubble system";
+
+                    let contentHtml = msg.text;
+                    if(msg.fileUrl) {
+                        contentHtml += `<br><a href="${msg.fileUrl}" target="_blank"><img src="${msg.fileUrl}" alt="Attached Image"></a>`;
+                    }
+
+                    chatBox.innerHTML += `<div class="${bubbleClass}">${msg.sender === 'Agent' ? '<strong>Agent:</strong><br>' : ''}${contentHtml}</div>`;
+                });
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        });
+
+        // মেসেজ সাবমিট হ্যান্ডলার
+        document.getElementById("chatForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const textInput = document.getElementById("chatInputText");
+            const fileInput = document.getElementById("mediaFileInput");
+            const text = textInput.value.trim();
+
+            if(!text) return;
+
+            // ইউজারের বেসিক ইনফো ফায়ারবেসে অটো সেভ করা যাতে অ্যাডমিন ইউজারের পরিচয় দেখতে পায়
+            get(child(ref(db), `users/${userId}`)).then((userSnap) => {
+                const userData = userSnap.val() || {};
+                
+                const userMetaInfo = {
+                    name: userData.name || "User",
+                    id: userData.id || userId,
+                    phone: userData.phone || "N/A",
+                    selectedTopic: selectedTopicName,
+                    lastActive: Date.now()
+                };
+                set(ref(db, `helplineChats/${userId}/userInfo`), userMetaInfo);
+
+                // মেসেজ অবজেক্ট তৈরি
+                const messageData = {
+                    sender: "User",
+                    text: text,
+                    topic: selectedTopicName,
+                    timestamp: Date.now()
+                };
+
+                // ছবি বা ফাইল আপলোড করা থাকলে (সিম্পল বেসড বা ইউআরএল হ্যান্ডলিং)
+                if(fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        messageData.fileUrl = e.target.result; // লোকাল বেসড প্রিভিউ বা ইউআরএল
+                        push(messagesRef, messageData).then(() => {
+                            textInput.value = "";
+                            fileInput.value = "";
+                            checkAndSendAutoBotReply(messagesRef);
+                        });
+                    };
+                    reader.readAsDataURL(fileInput.files[0]);
+                } else {
+                    push(messagesRef, messageData).then(() => {
+                        textInput.value = "";
+                        checkAndSendAutoBotReply(messagesRef);
+                    });
+                }
+            });
+        });
+
+        // প্রথম মেসেজ যাওয়ার পর অটো-বট রিপ্লাই পাঠানোর ফাংশন
+        function checkAndSendAutoBotReply(refPath) {
+            get(refPath).then((snap) => {
+                // যদি মেসেজ সংখ্যা ঠিক ১ বা প্রথমবার হয়, তবে বট মেসেজ পাঠাবে
+                if(snap.size === 1) {
+                    const botReply = {
+                        sender: "Bot",
+                        text: "এই মুহূর্তে আমাদের সকল প্রতিনিধি ব্যস্ত আছে খুব শীঘ্রই আপনার এসএমএস এর রিপ্লাই দেওয়া হবে।",
+                        timestamp: Date.now() + 500
+                    };
+                    push(refPath, botReply);
+                }
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#059669">
+    <title>OKB - All Tasks List</title>
+    
+    <!-- Google Fonts & Remix Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-green: #059669;
+            --primary-dark-green: #047857;
+            --gold-accent: #f59e0b;
+            --gold-dark: #b45309;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 10px 25px rgba(5, 150, 105, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #e2e8f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 430px;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding-bottom: 90px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* HEADER */
+        .header {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #ffffff, #f0fdf4);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 80;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stylish-back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            font-size: 18px;
+            text-decoration: none;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+        }
+
+        .stylish-back-btn:active {
+            transform: scale(0.92);
+            background: #f1f5f9;
+        }
+
+        .header h2 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .refresh-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-green);
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:active {
+            transform: rotate(180deg) scale(0.92);
+        }
+
+        /* CONTENT */
+        .content {
+            padding: 16px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* SECTION TITLE */
+        .section-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-top: 4px;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* TASK LIST CONTAINER */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .task-item {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+
+        .task-item:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary-green);
+            box-shadow: 0 8px 20px rgba(5, 150, 105, 0.12);
+        }
+
+        .task-item:active {
+            transform: scale(0.98);
+        }
+
+        .task-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .task-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--primary-green);
+            flex-shrink: 0;
+            transition: 0.25s ease;
+        }
+
+        .task-item:hover .task-icon {
+            background: var(--primary-green);
+            color: #ffffff;
+            border-color: var(--primary-green);
+        }
+
+        .task-info h4 {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .task-info p {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+            font-weight: 600;
+        }
+
+        .task-badge {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 30px;
+            background: #fef3c7;
+            color: var(--gold-dark);
+            border: 1px solid #fde68a;
+            flex-shrink: 0;
+        }
+
+        .task-badge.available {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        /* PARTNERSHIP SECTION (Square 100% 3 Items) */
+        .partners-section {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .partner-box {
+            background: #ffffff;
+            border: 5px solid var(--border-color);
+            border-radius: 90px;
+            aspect-ratio: 1 / 1; /* স্কয়ার ১০০% নিশ্চিত করতে */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: var(--shadow-sm);
+            padding: 12px;
+            transition: 0.2s;
+        }
+
+        .partner-box:hover {
+            border-color: var(--gold-accent);
+            transform: translateY(-2px);
+        }
+
+        .partner-box img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .partner-box span {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        /* ALERT MODAL / POPUP */
+        .custom-alert {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .alert-box {
+            background: #ffffff;
+            width: 100%;
+            max-width: 320px;
+            border-radius: 20px;
+            padding: 24px 20px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+            animation: scaleUp 0.25s ease;
+        }
+
+        @keyframes scaleUp {
+            from { transform: scale(0.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .alert-icon {
+            font-size: 40px;
+            color: #f59e0b;
+            margin-bottom: 10px;
+        }
+
+        .alert-box h3 {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .alert-box p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+            font-weight: 600;
+        }
+
+        .alert-btn {
+            background: linear-gradient(135deg, var(--primary-green), var(--primary-dark-green));
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+        }
+
+        /* PREMIUM 3D FLOATING BOTTOM NAV */
+        .bottom-nav {
+            position: fixed;
+            left: 50%;
+            bottom: 12px;
+            transform: translateX(-50%);
+            width: calc(100% - 24px);
+            max-width: 410px;
+            box-sizing: border-box;
+            z-index: 90;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 5px;
+            padding: 10px 8px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            border-radius: 24px;
+            box-shadow: 0 14px 35px rgba(4, 70, 48, 0.15), inset 0 2px 2px rgba(255, 255, 255, 1);
+            backdrop-filter: blur(18px);
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 8px 3px;
+            border-radius: 16px;
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+        }
+
+        .nav-item.active {
+            color: var(--primary-green);
+            background: #f0fdf4;
+            font-weight: 800;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-left">
+            <a href="../dashboard.html" class="stylish-back-btn" aria-label="Go Back">
+                <i class="ri-arrow-left-line"></i>
+            </a>
+            <h2>কাজের তালিকা</h2>
+        </div>
+        <button class="refresh-btn" type="button" aria-label="Refresh Page" onclick="location.reload()">
+            <i class="ri-refresh-line"></i>
+        </button>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+        <div class="section-title">
+            <i class="ri-apps-2-fill" style="color:var(--gold-accent)"></i> কাজের ক্যাটাগরি সমূহ
+        </div>
+
+        <!-- TASK LIST (8 Items) -->
+        <div class="task-list">
+            <!-- 1. Data Entry (Available) -->
+            <a href="../work/tasks.html" class="task-item">
+                <div class="task-left">
+                    <div class="task-icon">
+                        <i class="ri-table-line"></i>
+                    </div>
+                    <div class="task-info">
+                        <h4>১. ডাটা এন্ট্রি (Data Entry)</h4>
+                        <p>গুগল শিট টাস্ক ও ডাটা এন্ট্রি কাজ</p>
+                    </div>
+                </div>
+                <div class="task-badge available">এভেলেবেল</div>
+            </a>
+
+            <!-- 2. SEO (Locked) -->
+            <div class="task-item" onclick="showUnavailableAlert('এসইও (SEO) টাস্ক')">
+                <div class="task-left">
+                    <div class="task-icon" style="background:#fffbeb; color:#d97706; border-color:#fde68a;">
+                        <i class="ri-line-chart-line"></i>
+                    </div>
+                    <div class="task-info">
+                        <h4>২. এসইও (SEO)</h4>
+                        <p>ওয়েবসাইট অপ্টিমাইজেশন ও ট্রাফিক কাজ</p>
+                    </div>
+                </div>
+                <div class="task-badge">লকড</div>
+            </div>
+
+            <!-- 3. Social Marketing (Locked) -->
+            <div class="task-item" onclick="showUnavailableAlert('সোশ্যাল মার্কেটিং')">
+                <div class="task-left">
+                    <div class="task-icon" style="background:#e0f2fe; color:#0284c7; border-color:#bae6fd;">
+                        <i class="ri-share-forward-line"></i>
+                    </div>
+                    <div class="task-info">
+                        <h4>৩. সোশ্যাল মার্কেটিং</h4>
+                        <p>সোশ্যাল মিডিয়া প্রমোশন ও শেয়ারিং</p>
+                    </div>
+                </div>
+                <div class="task-badge">লকড</div>
+            </div>
+
+            <!-- 4. Captcha Join (Locked) -->
+            <div class="task-item" onclick="showUnavailableAlert('ক্যাপচা জয়েন')">
+                <div class="task-left">
+                    <div class="task-icon" style="background:#fce7f3; color:#db2777; border-color:#fbcfe8;">
+                        <i class="ri-shield-keyhole-line"></i>
+                    </div>
+                    <div class="task-info">
+                        <h4>৪. ক্যাপচা জয়েন</h4>
+                        <p>সিকিউরিটি ক্যাপচা সলভিং ও এন্ট্রি</p>
+                    </div>
+                </div>
+                <div class="task-badge">লকড</div>
+            </div>
+
+            <!-- 5. Network Recharge (Locked) -->
+            <div class="task-item" onclick="showUnavailableAlert('নেটওয়ার্ক রিচার্জ')">
+                <div class="task-left">
+                    <div class="task-icon" style="background:#ede9fe; color:#7c3aed; border-color:#ddd6fe;">
+                        <i class="ri-smartphone-line"></i>
+                    </div>
+                    <div class="task-info">
+                        <h4>৫. ট্রাফিক এনালাইজ</h4>
+                        <p>কিওয়ার্ড  ক্যাটাগরি</p>
+                    </div>
+                </div>
+                <div class="task-badge">লকড</div>
+            </div>
+
+            <!-- 6. Email Marketing (Locked) -->
+            <div class="task-item" onclick="showUnavailableAlert('ইমেইল মার্কেটিং')">
+                <div class="task-left">
+                    <div class="task-icon" style="background:#ffedd5; color:#c2410c; border-color:#fed7aa;">
+                        <i class="ri-mail-send-line"></i>
+                    </div>
+                    <div class="task-info">
+                        <h4>৬. ইমেইল মার্কেটিং</h4>
+                        <p>নিউজলেটার ও প্রমোশনাল ইমেইল সেন্ড</p>
+                    </div>
+                </div>
+                <div class="task-badge">লকড</div>
+            </div>
+
+            <!-- 7. Social Media Ad Manager (Locked) -->
+            <div class="task-item" onclick="showUnavailableAlert('সোশ্যাল মিডিয়া অ্যাড ম্যানেজার')">
+                <div class="task-left">
+                    <div class="task-icon" style="background:#ccfbf1; color:#0d9488; border-color:#99f6e4;">
+                        <i class="ri-advertisement-line"></i>
+                    </div>
+                    <div class="task-info">
+                        <h4>৭. সোশ্যাল মিডিয়া অ্যাড ম্যানেজার</h4>
+                        <p>বিজ্ঞাপন ক্যাম্পেইন ও ম্যানেজমেন্ট</p>
+                    </div>
+                </div>
+                <div class="task-badge">লکড</div>
+            </div>
+
+            <!-- 8. Git Create (Locked) -->
+            <div class="task-item" onclick="showUnavailableAlert('গিট তৈরি করা')">
+                <div class="task-left">
+                    <div class="task-icon" style="background:#fee2e2; color:#dc2626; border-color:#fca5a5;">
+                        <i class="ri-git-repository-line"></i>
+                    </div>
+                    <div class="task-info">
+                        <h4>৮. গিট তৈরি করা (Git Create)</h4>
+                        <p>সোর্স কোড ও রিপোজিটরি ম্যানেজমেন্ট</p>
+                    </div>
+                </div>
+                <div class="task-badge">লকড</div>
+            </div>
+        </div>
+
+        <!-- PARTNERSHIP SECTION (Square 100% 3 Items) -->
+        <div class="partners-section">
+            <div class="section-title" style="font-size: 12px; color: var(--text-muted);">
+                <i class="ri-shield-star-fill" style="color:var(--gold-accent)"></i> আমাদের বিশ্বস্ত পার্টনারগণ
+            </div>
+            <div class="partners-grid">
+                <div class="partner-box">
+                    <img src="https://i.postimg.cc/8crKjQcw/vecteezy-amazon-logo-symbol-ecommerce-website-amazon-s-largest-33265339.png" alt="Partner 1">
+                    <span></span>
+                </div>
+                <div class="partner-box">
+                    <img src="https://i.postimg.cc/VvbGdQvZ/vecteezy-paytm-upi-transparent-icon-51336375.png" alt="Partner 2">
+                    <span></span>
+                </div>
+                <div class="partner-box">
+                    <img src="https://i.postimg.cc/XqyHpSqP/vecteezy-bitcoin-3d-rendering-icon-illustration-28619570.png" alt="Partner 3">
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM UNAVAILABLE POPUP MODAL -->
+    <div class="custom-alert" id="unavailableModal">
+        <div class="alert-box">
+            <div class="alert-icon">
+                <i class="ri-lock-password-line"></i>
+            </div>
+            <h3>দুঃখিত!</h3>
+            <p id="alertMessage">এটি আপনার জন্য এভেলেবেল নেই।</p>
+            <button class="alert-btn" onclick="closeAlert()">ঠিক আছে</button>
+        </div>
+    </div>
+
+ 
+
+<!-- SCRIPT FOR ALERT MODAL -->
+<script>
+    function showUnavailableAlert(taskName) {
+        const modal = document.getElementById("unavailableModal");
+        const msg = document.getElementById("alertMessage");
+        msg.innerText = `"${taskName}" - এটি আপনার জন্য এভেলেবেল নেই।`;
+        modal.style.display = "flex";
+    }
+
+    function closeAlert() {
+        const modal = document.getElementById("unavailableModal");
+        modal.style.display = "none";
+    }
+</script>
+
+</body>
+</html>

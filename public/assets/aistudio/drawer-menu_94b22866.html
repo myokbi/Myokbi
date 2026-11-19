@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#c89b3c">
+    <meta name="description" content="OKB Drawer Menu & Profile">
+    <title>OKB Menu & Profile</title>
+
+    <!-- ফন্ট এবং সিএসএস -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/common.css">
+
+    <style>
+        :root {
+            --primary-gold: #f59e0b;
+            --primary-gold-dark: #d97706;
+            --bg-white: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: rgba(245, 158, 11, 0.35);
+            --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 12px 30px rgba(217, 119, 6, 0.2);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: 
+                radial-gradient(circle at 10% 10%, rgba(245, 158, 11, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(217, 119, 6, 0.12) 0%, transparent 40%),
+                #fffdfa;
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+        }
+
+        .drawer-container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 16px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* ড্রয়ার হেডার */
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .drawer-header h2 {
+            margin: 0;
+            font-size: 20px;
+            color: var(--text-main);
+            font-weight: 800;
+        }
+
+        .close-btn {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            transition: 0.2s;
+            text-decoration: none;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .close-btn:hover {
+            background: var(--primary-gold);
+            color: #fff;
+            border-color: var(--primary-gold);
+        }
+
+        /* প্রিমিয়াম 3D আইডি কার্ড ডিজাইন */
+        .worker-id-card {
+            background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
+            color: #ffffff;
+            border-radius: 24px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 2px solid var(--primary-gold);
+            margin-bottom: 18px;
+        }
+
+        .worker-id-card::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 140px;
+            height: 140px;
+            background: rgba(245, 158, 11, 0.25);
+            border-radius: 50%;
+            filter: blur(25px);
+        }
+
+        .card-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .company-brand {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--primary-gold);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .worker-level-badge {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fde68a;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--primary-gold);
+        }
+
+        .card-body-row {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* প্রোফাইল ছবি ১০০% নিখুঁত গোল ও প্রিমিয়াম বর্ডার */
+        .card-avatar {
+            width: 65px !important;
+            height: 65px !important;
+            min-width: 65px !important;
+            min-height: 65px !important;
+            border-radius: 50% !important;
+            border: 2.5px solid var(--primary-gold);
+            object-fit: cover !important;
+            background: #fff;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        }
+
+        .card-user-details h3 {
+            margin: 0 0 4px 0;
+            font-size: 17px;
+            color: #fff;
+            font-weight: 800;
+        }
+
+        .card-user-details p {
+            margin: 2px 0;
+            font-size: 12px;
+            color: #cbd5e1;
+        }
+
+        .card-footer-info {
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            padding-top: 12px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 12px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-footer-info span {
+            color: #94a3b8;
+        }
+
+        .card-footer-info strong {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        /* মিনি-ড্যাশবোর্ড স্টাইল */
+        .drawer-mini-dashboard {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .mini-dash-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 14px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .mini-dash-card:hover {
+            border-color: var(--primary-gold);
+            transform: translateY(-2px);
+        }
+
+        .dash-label {
+            display: block;
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .dash-value {
+            font-size: 15px;
+            color: var(--primary-gold-dark);
+            font-weight: 800;
+        }
+
+        /* বাটনসমূহ */
+        .card-action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .mini-action-btn {
+            flex: 1;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-main);
+            text-align: center;
+            text-decoration: none;
+            box-shadow: var(--shadow-sm);
+            transition: 0.2s;
+        }
+
+        .mini-action-btn:hover {
+            background: var(--primary-gold);
+            color: #fff;
+            border-color: var(--primary-gold);
+        }
+
+        /* মেনু লিস্ট অপশন */
+        .drawer-menu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 18px;
+            flex-grow: 1;
+        }
+
+        .drawer-menu-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 12px 16px;
+            border-radius: 14px;
+            text-decoration: none;
+            color: var(--text-main);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+            transition: 0.2s;
+        }
+
+        .drawer-menu-item:hover {
+            border-color: var(--primary-gold);
+            transform: translateX(4px);
+            background: linear-gradient(135deg, rgba(254, 243, 199, 0.5), #ffffff);
+        }
+
+        .company-about-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 14px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 10px;
+        }
+
+        .company-about-section h4 {
+            margin: 0 0 4px 0;
+            font-size: 13px;
+            color: var(--primary-gold-dark);
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+
+        .company-about-section p {
+            margin: 0;
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="drawer-container">
+
+    <div>
+        <div class="drawer-header">
+            <h2>OKB Menu</h2>
+            <a href="dashboard.html" class="close-btn" aria-label="Close Menu">✕</a>
+        </div>
+
+        <!-- আইডি কার্ড -->
+        <div class="worker-id-card">
+            <div class="card-top-row">
+                <span class="company-brand">MY OKBI ID CARD</span>
+                <span class="worker-level-badge" id="drawerWorkerLevel">Active Member</span>
+            </div>
+
+            <div class="card-body-row">
+                <img id="drawerUserPhoto" src="assets/icons/profile.png" alt="User Photo" class="card-avatar">
+                <div class="card-user-details">
+                    <h3 id="drawerUserName">Loading Name...</h3>
+                    <p id="drawerUserEmail">loading@example.com</p>
+                    <p id="drawerUserPhone">+880 1XXXXXXXXX</p>
+                </div>
+            </div>
+
+            <div class="card-footer-info">
+                <div><span>ID No:</span> <br><strong id="drawerUserId">Loading...</strong></div>
+                <div><span>Status:</span> <br><strong id="drawerUserStatus" style="color: #4ade80;">Active</strong></div>
+            </div>
+        </div>
+
+        <!-- মিনি ড্যাশবোর্ড -->
+        <div class="drawer-mini-dashboard">
+            <div class="mini-dash-card">
+                <span class="dash-label">Total Balance</span>
+                <strong id="drawerUserBalance" class="dash-value">0.00 BDT</strong>
+            </div>
+            <div class="mini-dash-card">
+                <span class="dash-label">Today's Earn (24H)</span>
+                <strong id="drawerTodayEarn" class="dash-value">0.00 BDT</strong>
+            </div>
+            <div class="mini-dash-card">
+                <span class="dash-label">Completed Task</span>
+                <strong id="drawerCompletedTasks" class="dash-value">0</strong>
+            </div>
+            <div class="mini-dash-card">
+                <span class="dash-label">Referral Bonus</span>
+                <strong id="drawerReferralBonus" class="dash-value">0.00 BDT</strong>
+            </div>
+        </div>
+
+        <div class="card-action-buttons">
+            <a href="leader.html" class="mini-action-btn">Leaderboard</a>
+            <a href="history.html" class="mini-action-btn">History</a>
+            <a href="helpline.html" class="mini-action-btn">Support</a>
+        </div>
+
+        <div class="drawer-menu-list">
+            <a href="dashboard.html" class="drawer-menu-item">
+                <span>🏠 Home Dashboard</span>
+                <strong>→</strong>
+            </a>
+            <a href="work.html" class="drawer-menu-item">
+                <span>💼 Available Work</span>
+                <strong>→</strong>
+            </a>
+            <a href="deposit-withdraw.html" class="drawer-menu-item">
+                <span>💳 Deposit Balance</span>
+                <strong>→</strong>
+            </a>
+            <a href="deposit-withdraw.html" class="drawer-menu-item">
+                <span>💸 Withdraw Funds</span>
+                <strong>→</strong>
+            </a>
+            <a href="referCode.html" class="drawer-menu-item">
+                <span>🎁 Referral & Offers</span>
+                <strong>→</strong>
+            </a>
+        </div>
+    </div>
+
+    <footer class="company-about-section">
+        <h4>About MyOKB Platform</h4>
+        <p>Rk is a trusted digital earning and micro-task management ecosystem, earn, and grow seamlessly in Bangladesh.India. Pakistan. Nepal</p>
+    </footer>
+
+</div>
+
+<!-- ফায়ারবেস রিয়েলটাইম সিঙ্ক স্ক্রিপ্ট (ত্রুটিমুক্ত সিনট্যাক্স) -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+        databaseURL: "https://okb2-ee83b-default-rtdb.firebaseio.com/"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const userId = localStorage.getItem("okbUserId");
+        
+        if (!userId) {
+            console.warn("No user logged in.");
+            return;
+        }
+
+        const userRef = ref(db, 'users/' + userId);
+
+        onValue(userRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                // ইউজার বেসিক ইনফো আপডেট
+                const nameEl = document.getElementById("drawerUserName");
+                if (nameEl) nameEl.innerText = data.name || "User Name";
+
+                const emailEl = document.getElementById("drawerUserEmail");
+                if (emailEl) emailEl.innerText = data.email || "user@example.com";
+
+                const phoneEl = document.getElementById("drawerUserPhone");
+                if (phoneEl) phoneEl.innerText = data.phone || "+880 1XXXXXXXXX";
+
+                const idEl = document.getElementById("drawerUserId");
+                if (idEl) idEl.innerText = data.id || userId;
+                
+                const levelEl = document.getElementById("drawerWorkerLevel");
+                if (levelEl) levelEl.innerText = data.level || "Active Member";
+                
+                // ১. টোটাল ব্যালেন্স
+                const totalBalance = Number(data.balance || 0);
+                const balEl = document.getElementById("drawerUserBalance");
+                if (balEl) balEl.innerText = totalBalance.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " BDT";
+                
+                // ২. টুডে আর্ন (২৪ ঘণ্টা)
+                const todayEarn = Number(data.todayEarn || 0);
+                const earnEl = document.getElementById("drawerTodayEarn");
+                if (earnEl) earnEl.innerText = todayEarn.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " BDT";
+                
+                // ৩. কমপ্লিটেড টাস্ক
+                const taskEl = document.getElementById("drawerCompletedTasks");
+                if (taskEl) taskEl.innerText = data.completedTasks || 0;
+                
+                // ৪. রেফারেল বোনাস
+                const refBonus = Number(data.referralBonus || 0);
+                const refEl = document.getElementById("drawerReferralBonus");
+                if (refEl) refEl.innerText = refBonus.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " BDT";
+                
+                // ৫. প্রোফাইল ছবি (অ্যাডমিন বা ইউজার কর্তৃক ফায়ারবেস থেকে সেট করা ছবি)
+                const photoEl = document.getElementById("drawerUserPhoto");
+                if (data.photoUrl && data.photoUrl.trim() !== "" && photoEl) {
+                    photoEl.src = data.photoUrl;
+                }
+            }
+        }, (error) => {
+            console.error("Firebase data sync error: ", error);
+        });
+    });
+</script>
+
+</body>
+</html>

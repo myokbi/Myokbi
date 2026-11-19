@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#c89b3c">
+    <meta name="description" content="OKB Peer to Peer Transfer">
+    <title>OKB - P2P Send Money</title>
+
+    <!-- ফন্ট এবং সিএসএস -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/common.css">
+
+    <style>
+        :root {
+            --primary-gold: #c89b3c;
+            --primary-gold-dark: #a67c27;
+            --bg-white: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: rgba(200, 155, 60, 0.3);
+            --shadow-3d: 0 15px 35px rgba(200, 155, 60, 0.15), 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-white);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 50px;
+        }
+
+        .p2p-container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        /* হেডার */
+        .p2p-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 12px 16px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 16px;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .company-logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-gold);
+        }
+
+        .p2p-header h2 {
+            margin: 0;
+            font-size: 16px;
+            color: var(--text-main);
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: #f1f5f9;
+            color: var(--text-main);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-gold);
+            color: #fff;
+        }
+
+        /* মেইন ব্যালেন্স কার্ড (থ্রিডি স্টাইল) */
+        .balance-display-card {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: #ffffff;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow-3d);
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .balance-display-card span {
+            font-size: 11px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .balance-display-card strong {
+            font-size: 24px;
+            color: var(--primary-gold);
+        }
+
+        /* কার্ড বক্স (ফর্ম ও হিস্ট্রির জন্য) */
+        .card-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .card-box h3 {
+            margin: 0 0 14px 0;
+            font-size: 15px;
+            color: var(--text-main);
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 8px;
+        }
+
+        /* ফর্ম স্টাইল */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .input-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .input-group input {
+            padding: 11px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: #f8fafc;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-gold);
+            background: #fff;
+        }
+
+        .charge-notice {
+            background: #fffbeb;
+            border: 1px dashed var(--primary-gold);
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            line-height: 1.4;
+        }
+
+        .send-money-btn {
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-gold-dark));
+            color: #fff;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(200, 155, 60, 0.3);
+            transition: 0.2s;
+        }
+
+        .send-money-btn:hover { opacity: 0.9; }
+
+        /* ট্রানজেকশন হিস্টরি কার্ড লিস্ট */
+        .trx-history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .trx-card-item {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        .trx-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            color: var(--primary-gold-dark);
+        }
+
+        .trx-card-body {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-muted);
+            font-size: 11px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="p2p-container">
+
+    <!-- হেডার -->
+    <header class="p2p-header">
+        <div class="header-brand">
+            <img src="assets/okbi.png" alt="OKB Logo" class="company-logo">
+            <h2>OKB P2P Transfer</h2>
+        </div>
+        <a href="dashboard.html" class="back-btn" aria-label="Back">✕</a>
+    </header>
+
+    <!-- মেইন ব্যালেন্স ডিসপ্লে কার্ড -->
+    <div class="balance-display-card">
+        <span>Available Main Balance</span>
+        <strong id="p2pMainBalance">0.00 BDT</strong>
+    </div>
+
+    <!-- সেন্ড মানি ফর্ম বক্স -->
+    <section class="card-box">
+        <h3>Send Money to User (P2P)</h3>
+        
+        <div class="charge-notice">
+            ℹ️ <strong>শর্তাবলী ও চার্জ:</strong> সর্বনিম্ন ১,০০০ টাকা থেকে শুরু করে সর্বোচ্চ ১,০০,০০০ টাকা পর্যন্ত পাঠানো যাবে। প্রতি হাজারে অতিরিক্ত <strong>৫০ টাকা</strong> সার্ভিস চার্জ কাটা হবে।
+        </div>
+
+        <form id="p2pSendForm">
+            <div class="input-group">
+                <label>Recipient Referral Code</label>
+                <input type="text" id="recipientCode" placeholder="e.g. OKB-123456" required>
+            </div>
+            <div class="input-group">
+                <label>Amount (BDT)</label>
+                <input type="number" id="sendAmount" placeholder="Min 1,000 to Max 100,000" min="1000" max="100000" required>
+            </div>
+            <button type="submit" class="send-money-btn">Transfer Money Now</button>
+        </form>
+    </section>
+
+    <!-- ট্রানজেকশন হিস্টরি সেকশন -->
+    <section class="card-box">
+        <h3>P2P Transaction History</h3>
+        <div class="trx-history-list" id="p2pHistoryList">
+            <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin: 0;">No transactions yet.</p>
+        </div>
+    </section>
+
+</div>
+
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/coin-calculator.js"></script>
+
+
+<!-- ফায়ারবেস এবং জাভাস্ক্রিপ্ট রিয়েলটাইম লজিক -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, get, child, update, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+        databaseURL: "https://okb2-ee83b-default-rtdb.firebaseio.com/"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const userId = localStorage.getItem("okbUserId") || "default_user";
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // ১. ইউজারের লাইভ মেইন ব্যালেন্স ফেচ করা
+        const userRef = ref(db, `users/${userId}`);
+        onValue(userRef, (snapshot) => {
+            if(snapshot.exists()) {
+                const userData = snapshot.val();
+                document.getElementById("p2pMainBalance").innerText = (userData.balance || 0).toFixed(2) + " BDT";
+            }
+        });
+
+        // ২. সেন্ড মানি সাবমিশন ফর্ম হ্যান্ডলার
+        document.getElementById("p2pSendForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const recipientCode = document.getElementById("recipientCode").value.trim();
+            const amount = parseFloat(document.getElementById("sendAmount").value);
+
+            // লিমিট ভ্যালিডেশন
+            if (amount < 1000 || amount > 100000) {
+                alert("Minimum transfer amount is 1,000 BDT and maximum is 100,000 BDT per transaction.");
+                return;
+            }
+
+            // সার্ভিস চার্জ হিসাব: প্রতি হাজারে ৫০ টাকা (যেমন: ৫০০০ টাকায় ২৫০ টাকা)
+            const serviceCharge = (amount / 1000) * 50;
+            const totalDeduction = amount + serviceCharge;
+
+            const dbRef = ref(db);
+            get(child(dbRef, `users/${userId}`)).then((senderSnap) => {
+                if(!senderSnap.exists()) {
+                    alert("Sender profile not found!");
+                    return;
+                }
+
+                const senderData = senderSnap.val();
+                const senderBalance = senderData.balance || 0;
+
+                // নিজস্ব রেফার কোডে টাকা পাঠানো প্রতিরোধ করা
+                const senderMyCode = senderData.referCode || `OKB-${senderData.id || userId.toUpperCase()}`;
+                if(senderMyCode === recipientCode) {
+                    alert("You cannot send money to yourself!");
+                    return;
+                }
+
+                if(senderBalance < totalDeduction) {
+                    alert(`Insufficient Balance! Total required (Amount + Service Charge): ${totalDeduction} BDT`);
+                    return;
+                }
+
+                // প্রাপক ইউজারকে রেফার কোড দিয়ে খুঁজে বের করা
+                get(child(dbRef, `users`)).then((allUsersSnap) => {
+                    if(!allUsersSnap.exists()) {
+                        alert("Recipient not found.");
+                        return;
+                    }
+
+                    let recipientKey = null;
+                    let recipientData = null;
+
+                    allUsersSnap.forEach((childSnap) => {
+                        const u = childSnap.val();
+                        const uCode = u.referCode || `OKB-${u.id || childSnap.key.toUpperCase()}`;
+                        if(uCode === recipientCode) {
+                            recipientKey = childSnap.key;
+                            recipientData = u;
+                        }
+                    });
+
+                    if(!recipientKey) {
+                        alert("Invalid Recipient Referral Code! User not found.");
+                        return;
+                    }
+
+                    // ট্রানজেকশন আইডি তৈরি (TRX-XXXXXXXX)
+                    const trxId = "TRX-" + Math.floor(10000000 + Math.random() * 90000000);
+                    const timestamp = Date.now();
+                    const dateStr = new Date(timestamp).toLocaleString();
+
+                    // ব্যালেন্স আপডেট করা
+                    const newSenderBalance = senderBalance - totalDeduction;
+                    const recipientCurrentBal = recipientData.balance || 0;
+                    const newRecipientBalance = recipientCurrentBal + amount;
+
+                    const updates = {};
+                    updates[`users/${userId}/balance`] = newSenderBalance;
+                    updates[`users/${recipientKey}/balance`] = newRecipientBalance;
+
+                    update(ref(db), updates).then(() => {
+                        // ট্রানজেকশন রেকর্ড সেভ করা (প্রেরকের হিস্ট্রিতে দেখানোর জন্য)
+                        const transactionRecord = {
+                            trxId: trxId,
+                            senderId: userId,
+                            recipientCode: recipientCode,
+                            amount: amount,
+                            serviceCharge: serviceCharge,
+                            totalDeduction: totalDeduction,
+                            date: dateStr,
+                            timestamp: timestamp
+                        };
+
+                        const newTrxRef = push(ref(db, `p2pTransactions/${userId}`));
+                        set(newTrxRef, transactionRecord).then(() => {
+                            alert(`Transfer Successful! TRX ID: ${trxId}`);
+                            document.getElementById("p2pSendForm").reset();
+                        });
+                    }).catch((err) => {
+                        alert("Transfer Error: " + err.message);
+                    });
+                });
+            });
+        });
+
+        // ৩. রিয়েলটাইম P2P ট্রানজেকশন হিস্টরি লোড করা
+        onValue(ref(db, `p2pTransactions/${userId}`), (snapshot) => {
+            const listEl = document.getElementById("p2pHistoryList");
+            listEl.innerHTML = "";
+
+            if(snapshot.exists()) {
+                // সাজানোর জন্য অ্যারে তে রূপান্তর করে রিভার্স করা (সর্বশেষটি উপরে দেখাবে)
+                let trxArray = [];
+                snapshot.forEach((childSnap) => {
+                    trxArray.push(childSnap.val());
+                });
+                trxArray.reverse();
+
+                trxArray.forEach((item) => {
+                    listEl.innerHTML += `
+                        <div class="trx-card-item">
+                            <div class="trx-card-header">
+                                <span>Ref: ${item.recipientCode}</span>
+                                <span style="color:var(--text-main); font-weight:800;">-${item.totalDeduction} BDT</span>
+                            </div>
+                            <div class="trx-card-body">
+                                <span>TRX: <strong>${item.trxId}</strong></span>
+                                <span>Charge: ${item.serviceCharge} BDT</span>
+                            </div>
+                            <div style="font-size: 10px; color: #94a3b8; text-align: right; border-top: 1px dashed #e2e8f0; padding-top: 4px;">
+                                ${item.date}
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                listEl.innerHTML = `<p style="font-size: 12px; color: var(--text-muted); text-align: center; margin: 0;">No transactions yet.</p>`;
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

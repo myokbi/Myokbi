@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#c89b3c">
+    <meta name="description" content="OKB Deposit and Withdraw Portal">
+    <title>OKB - Deposit & Withdraw</title>
+
+    <!-- ফন্ট এবং সিএসএস -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/common.css">
+
+    <style>
+        :root {
+            --primary-gold: #c89b3c;
+            --primary-gold-dark: #a67c27;
+            --bg-white: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: rgba(200, 155, 60, 0.3);
+            --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 25px rgba(200, 155, 60, 0.12);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-white);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 40px;
+        }
+
+        .portal-container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        /* হেডার ও লোগো */
+        .portal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            background: var(--card-bg);
+            padding: 12px 16px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .company-logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-gold);
+        }
+
+        .portal-header h2 {
+            margin: 0;
+            font-size: 16px;
+            color: var(--text-main);
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: #f1f5f9;
+            color: var(--text-main);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-gold);
+            color: #fff;
+        }
+
+        /* ব্যালেন্স কার্ড সেকশন (ডুয়াল ব্যালেন্স) */
+        .balance-cards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .bal-card {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: #ffffff;
+            padding: 14px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .bal-card span {
+            font-size: 11px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .bal-card strong {
+            font-size: 15px;
+            color: var(--primary-gold);
+        }
+
+        /* মেইন ট্যাব সুইচ (Deposit / Withdraw) */
+        .portal-tabs {
+            display: flex;
+            background: #e2e8f0;
+            border-radius: 14px;
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+
+        .portal-tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+
+        .portal-tab-btn.active {
+            background: #ffffff;
+            color: var(--primary-gold-dark);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* সেকশন টগল প্যানেল */
+        .portal-section {
+            display: none;
+        }
+
+        .portal-section.active {
+            display: block;
+        }
+
+        .card-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 16px;
+        }
+
+        .card-box h3 {
+            margin: 0 0 14px 0;
+            font-size: 15px;
+            color: var(--text-main);
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 8px;
+        }
+
+        /* পেমেন্ট গেটওয়ে লোগো সিলেকশন */
+        .gateway-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .gateway-item {
+            background: #f8fafc;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 10px 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .gateway-item.selected {
+            border-color: var(--primary-gold);
+            background: rgba(200, 155, 60, 0.1);
+        }
+
+        .gateway-item img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+            margin-bottom: 4px;
+        }
+
+        .gateway-item span {
+            display: block;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        /* অ্যাডমিন নম্বর বক্স */
+        .admin-number-box {
+            background: #fffbeb;
+            border: 1px dashed var(--primary-gold);
+            padding: 10px 14px;
+            border-radius: 10px;
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .admin-number-box strong {
+            color: var(--primary-gold-dark);
+            letter-spacing: 0.5px;
+        }
+
+        /* ফর্ম ইনপুট স্টাইল */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .input-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .input-group input, .input-group select {
+            padding: 11px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: #f8fafc;
+            font-size: 13px;
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            border-color: var(--primary-gold);
+            background: #fff;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-gold-dark));
+            color: #fff;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 6px;
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* হিস্ট্রি ও স্ট্যাটাস ব্যাজ */
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .history-item {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        .status-badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+
+        .status-pending { background: rgba(234, 179, 8, 0.15); color: #ca8a04; }
+        .status-approved { background: rgba(34, 197, 94, 0.15); color: #16a34a; }
+        .status-rejected { background: rgba(239, 68, 68, 0.15); color: #dc2626; }
+    </style>
+</head>
+
+<body>
+
+<div class="portal-container">
+
+    <!-- টপ হেডার -->
+    <header class="portal-header">
+        <div class="header-brand">
+            <img src="https://i.postimg.cc/FzGmnmX4/myokbi.png" alt="OKB Logo" class="company-logo">
+            <h2>My Okbi</h2>
+        </div>
+        <a href="dashboard.html" class="back-btn" aria-label="Back">✕</a>
+    </header>
+
+    <!-- ডুয়াল ব্যালেন্স কার্ড (মেইন ব্যালেন্স ও ডিপোজিট ব্যালেন্স) -->
+    <div class="balance-cards-grid">
+        <div class="bal-card">
+            <span>Main Balance</span>
+            <strong id="userMainBalance">0.00 BDT</strong>
+        </div>
+        <div class="bal-card">
+            <span>Deposit Balance</span>
+            <strong id="userDepositBalance">0.00 BDT</strong>
+        </div>
+    </div>
+
+    <!-- ট্যাব সুইচ (Deposit / Withdraw) -->
+    <div class="portal-tabs">
+        <button type="button" class="portal-tab-btn active" id="depTabBtn" onclick="switchPortalTab('deposit')">Deposit Portal</button>
+        <button type="button" class="portal-tab-btn" id="witTabBtn" onclick="switchPortalTab('withdraw')">Withdraw Portal</button>
+    </div>
+
+    <!-- ==========================================
+         DEPOSIT SECTION
+         ========================================== -->
+    <section id="depositSection" class="portal-section active">
+        <div class="card-box">
+            <h3>Add Fund via Deposit</h3>
+            
+            <label style="font-size: 12px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 8px;">Select Payment Method</label>
+            <div class="gateway-grid">
+                <div class="gateway-item" onclick="selectGateway('bKash', this)">
+                    <img src="https://i.postimg.cc/Hnf4sWJs/bkash-logo-png-seeklogo-273684.png" alt="bKash">
+                    <span>bKash</span>
+                </div>
+                <div class="gateway-item" onclick="selectGateway('Nagad', this)">
+                    <img src="https://i.postimg.cc/J09c47yG/Nagad-Logo-wine.png" alt="Nagad">
+                    <span>Nagad</span>
+                </div>
+                <div class="gateway-item" onclick="selectGateway('Rocket', this)">
+                    <img src=https://i.postimg.cc/Y0Jfq24v/rocket-color-logo-mobile-banking-icon-free-png.png" alt="Rocket">
+                    <span>Rocket</span>
+                </div>
+                <div class="gateway-item" onclick="selectGateway('USDT', this)">
+                    <img src="https://i.postimg.cc/tJLtCR1P/USDT-Logo.png" alt="USDT">
+                    <span>USDT</span>
+                </div>
+            </div>
+
+            <!-- অ্যাডমিনের রিসিভিং নম্বর ডাইনামিক বক্স -->
+            <div class="admin-number-box" id="adminNumBox" style="display: none;">
+                <span id="gatewayNameTitle">Send Money to:</span>
+                <strong id="adminDisplayNumber">Loading...</strong>
+            </div>
+
+            <form id="depositForm">
+                <div class="input-group">
+                    <label>Sender Number / Wallet</label>
+                    <input type="text" id="depSenderNum" placeholder="e.g. 017XXXXXXXX" required>
+                </div>
+                <div class="input-group">
+                    <label>Transaction ID (TrxID)</label>
+                    <input type="text" id="depTrxId" placeholder="Enter valid TrxID" required>
+                </div>
+                <div class="input-group">
+                    <label>Amount (BDT)</label>
+                    <input type="number" id="depAmount" placeholder="Min 100 BDT" required>
+                </div>
+                <button type="submit" class="action-btn">Submit Deposit Request</button>
+            </form>
+        </div>
+
+        <!-- ডিপোজিট হিস্ট্রি ও স্ট্যাটাস -->
+        <div class="card-box">
+            <h3>Deposit History & Status</h3>
+            <div class="history-list" id="depositHistoryList">
+                <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin: 0;">No history found.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         WITHDRAW SECTION
+         ========================================== -->
+    <section id="withdrawSection" class="portal-section">
+        <div class="card-box">
+            <h3>Request Withdrawal</h3>
+            <form id="withdrawForm">
+                <div class="input-group">
+                    <label>Withdraw Method</label>
+                    <select id="witMethod" required>
+                        <option value="">Select Method</option>
+                        <option value="bKash">bKash</option>
+                        <option value="Nagad">Nagad</option>
+                        <option value="Rocket">Rocket</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Account Number</label>
+                    <input type="text" id="witAccountNum" placeholder="Your Personal Number" required>
+                </div>
+                <div class="input-group">
+                    <label>Amount (BDT)</label>
+                    <input type="number" id="witAmount" placeholder="Min 500 BDT" required>
+                </div>
+                <button type="submit" class="action-btn">Submit Withdraw Request</button>
+            </form>
+        </div>
+
+        <!-- উইথড্র হিস্ট্রি ও স্ট্যাটাস -->
+        <div class="card-box">
+            <h3>Withdraw History & Status</h3>
+            <div class="history-list" id="withdrawHistoryList">
+                <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin: 0;">No history found.</p>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/coin-calculator.js"></script>
+
+
+<!-- ফায়ারবেস এবং লজিক স্ক্রিপ্ট -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, set, get, child, onValue, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+        databaseURL: "https://okb2-ee83b-default-rtdb.firebaseio.com/"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const userId = localStorage.getItem("okbUserId") || "default_user";
+    let selectedGatewayName = "";
+
+    // ট্যাব সুইচ ফাংশন
+    window.switchPortalTab = function(tab) {
+        const depSec = document.getElementById("depositSection");
+        const witSec = document.getElementById("withdrawSection");
+        const depBtn = document.getElementById("depTabBtn");
+        const witBtn = document.getElementById("witTabBtn");
+
+        if(tab === 'deposit') {
+            depSec.classList.add("active");
+            witSec.classList.remove("active");
+            depBtn.classList.add("active");
+            witBtn.classList.remove("active");
+        } else {
+            witSec.classList.add("active");
+            depSec.classList.remove("active");
+            witBtn.classList.add("active");
+            depBtn.classList.remove("active");
+        }
+    }
+
+    // গেটওয়ে সিলেকشن এবং ফায়ারবেس থেকে অ্যাডমিন নম্বর ফেচ করা
+    window.selectGateway = function(gateway, element) {
+        document.querySelectorAll('.gateway-item').forEach(el => el.classList.remove('selected'));
+        element.classList.add('selected');
+        selectedGatewayName = gateway;
+
+        document.getElementById("adminNumBox").style.display = "flex";
+        document.getElementById("gatewayNameTitle").innerText = `${gateway} Number:`;
+
+        // ফায়ারবেসের settings/adminNumbers থেকে অ্যাডমিনের দেওয়া নম্বর ফেচ করা
+        get(child(ref(db), `settings/adminNumbers/${gateway}`)).then((snapshot) => {
+            if (snapshot.exists()) {
+                document.getElementById("adminDisplayNumber").innerText = snapshot.val();
+            } else {
+                document.getElementById("adminDisplayNumber").innerText = "Not Configured by Admin";
+            }
+        }).catch(() => {
+            document.getElementById("adminDisplayNumber").innerText = "Error loading number";
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // ইউজারের ব্যালেন্স রিয়েলটাইম লোড করা
+        const userRef = ref(db, 'users/' + userId);
+        onValue(userRef, (snapshot) => {
+            const data = snapshot.val();
+            if(data) {
+                document.getElementById("userMainBalance").innerText = (data.balance || 0).toFixed(2) + " BDT";
+                document.getElementById("userDepositBalance").innerText = (data.depositBalance || 0).toFixed(2) + " BDT";
+            }
+        });
+
+        // ডিপোজিট ফর্ম সাবমিট
+        document.getElementById("depositForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            if(!selectedGatewayName) {
+                alert("Please select a payment method (bKash/Nagad/etc.)");
+                return;
+            }
+
+            const senderNum = document.getElementById("depSenderNum").value;
+            const trxId = document.getElementById("depTrxId").value;
+            const amount = parseFloat(document.getElementById("depAmount").value);
+
+            const depositData = {
+                userId: userId,
+                gateway: selectedGatewayName,
+                senderNumber: senderNum,
+                trxId: trxId,
+                amount: amount,
+                status: "Pending", // Pending, Approved, Rejected
+                timestamp: Date.now()
+            };
+
+            const newDepRef = push(ref(db, 'deposits/' + userId));
+            set(newDepRef, depositData).then(() => {
+                alert("Deposit request submitted successfully! Waiting for admin approval.");
+                document.getElementById("depositForm").reset();
+                document.getElementById("adminNumBox").style.display = "none";
+                document.querySelectorAll('.gateway-item').forEach(el => el.classList.remove('selected'));
+                selectedGatewayName = "";
+            }).catch((err) => {
+                alert("Error: " + err.message);
+            });
+        });
+
+        // ডিপোজিট হিস্ট্রি ও স্ট্যাটাস রিয়েলটাইম লোড
+        onValue(ref(db, 'deposits/' + userId), (snapshot) => {
+            const listEl = document.getElementById("depositHistoryList");
+            listEl.innerHTML = "";
+            if(snapshot.exists()) {
+                snapshot.forEach((childSnap) => {
+                    const item = childSnap.val();
+                    let statusClass = "status-pending";
+                    if(item.status === "Approved") statusClass = "status-approved";
+                    if(item.status === "Rejected") statusClass = "status-rejected";
+
+                    listEl.innerHTML += `
+                        <div class="history-item">
+                            <div>
+                                <strong>${item.gateway} - ${item.amount} BDT</strong><br>
+                                <span style="color:var(--text-muted); font-size:10px;">Trx: ${item.trxId}</span>
+                            </div>
+                            <span class="status-badge ${statusClass}">${item.status}</span>
+                        </div>
+                    `;
+                });
+            } else {
+                listEl.innerHTML = `<p style="font-size: 12px; color: var(--text-muted); text-align: center; margin: 0;">No deposit history.</p>`;
+            }
+        });
+
+        // উইথড্র ফর্ম সাবমিট
+        document.getElementById("withdrawForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const method = document.getElementById("witMethod").value;
+            const accountNum = document.getElementById("witAccountNum").value;
+            const amount = parseFloat(document.getElementById("witAmount").value);
+
+            // মেইন ব্যালেন্স চেক (কোডের লজিক অনুযায়ী মেইন ব্যালেন্স থেকে উইথড্র হবে)
+            get(child(ref(db), `users/${userId}/balance`)).then((snapshot) => {
+                const currentBalance = snapshot.val() || 0;
+                if(currentBalance < amount) {
+                    alert("Insufficient Main Balance!");
+                    return;
+                }
+
+                const withdrawData = {
+                    userId: userId,
+                    method: method,
+                    accountNumber: accountNum,
+                    amount: amount,
+                    status: "Pending", // Pending, Approved, Rejected
+                    timestamp: Date.now()
+                };
+
+                const newWitRef = push(ref(db, 'withdraws/' + userId));
+                set(newWitRef, withdrawData).then(() => {
+                    alert("Withdrawal request submitted successfully!");
+                    document.getElementById("withdrawForm").reset();
+                });
+            });
+        });
+
+        // উইথড্র হিস্ট্রি ও স্ট্যাটাস রিয়েলটাইম লোড
+        onValue(ref(db, 'withdraws/' + userId), (snapshot) => {
+            const listEl = document.getElementById("withdrawHistoryList");
+            listEl.innerHTML = "";
+            if(snapshot.exists()) {
+                snapshot.forEach((childSnap) => {
+                    const item = childSnap.val();
+                    let statusClass = "status-pending";
+                    if(item.status === "Approved") statusClass = "status-approved";
+                    if(item.status === "Rejected") statusClass = "status-rejected";
+
+                    listEl.innerHTML += `
+                        <div class="history-item">
+                            <div>
+                                <strong>${item.method} - ${item.amount} BDT</strong><br>
+                                <span style="color:var(--text-muted); font-size:10px;">Acc: ${item.accountNumber}</span>
+                            </div>
+                            <span class="status-badge ${statusClass}">${item.status}</span>
+                        </div>
+                    `;
+                });
+            } else {
+                listEl.innerHTML = `<p style="font-size: 12px; color: var(--text-muted); text-align: center; margin: 0;">No withdraw history.</p>`;
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

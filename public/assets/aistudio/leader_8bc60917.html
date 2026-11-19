@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" id="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#020104">
+    <title>OKB Ultimate Champions - ARGB Edition</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+
+    <!-- CSS Styling -->
+    <style>
+        :root {
+            --bg-black: #050508;
+            --card-black: #0c0a14;
+            --border-glow: rgba(255, 255, 255, 0.08);
+            
+            /* ARGB Neon Colors */
+            --neon-red: #ff3366;
+            --neon-green: #00ff88;
+            --neon-blue: #00f0ff;
+            --neon-gold: #ffb700;
+            --neon-purple: #b000ff;
+
+            /* Medals Theme */
+            --diamond: #00f0ff;
+            --gold: #ffb700;
+            --silver: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-black);
+            color: #f8fafc;
+            padding-bottom: 60px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .dashboard {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        /* হেডার ডিজাইন */
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(12, 10, 20, 0.9);
+            backdrop-filter: blur(15px);
+            padding: 12px 16px;
+            border-radius: 18px;
+            border: 1px solid var(--border-glow);
+            margin-bottom: 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glow);
+            border-radius: 50%;
+            text-decoration: none;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        .header-logo img {
+            width: 38px !important;
+            height: 38px !important;
+            border-radius: 50% !important;
+            object-fit: cover !important;
+            display: block;
+            border: 1.5px solid var(--neon-gold);
+            box-shadow: 0 0 10px rgba(255, 183, 0, 0.4);
+        }
+
+        .header-title strong {
+            font-size: 14px;
+            color: #fff;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+
+        /* প্রিমিয়াম মিটার কাউন্টার (চাক্কা স্টাইল) */
+        .meter-counter-container {
+            background: linear-gradient(135deg, rgba(12,10,20,0.8), rgba(20,15,35,0.9));
+            border: 1px solid var(--border-glow);
+            padding: 16px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6), inset 0 0 15px rgba(0, 240, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .meter-label {
+            font-size: 11px;
+            color: #a78bfa;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 8px rgba(167, 139, 250, 0.5);
+        }
+
+        .meter-display {
+            display: inline-flex;
+            gap: 4px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 26px;
+            background: #020104;
+            padding: 6px 14px;
+            border-radius: 12px;
+            border: 1.5px solid var(--neon-blue);
+            color: var(--neon-blue);
+            text-shadow: 0 0 15px var(--neon-blue);
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.9), 0 0 15px rgba(0, 240, 255, 0.3);
+        }
+
+        .meter-digit {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* মেইন ARGB কার্ড */
+        .champions-card {
+            background: var(--card-black);
+            border: 2px solid transparent;
+            border-radius: 22px;
+            padding: 24px 16px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+            position: relative;
+            overflow: hidden;
+            background-image: linear-gradient(var(--card-black), var(--card-black)), linear-gradient(135deg, var(--neon-red), var(--neon-green), var(--neon-blue), var(--neon-purple));
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            animation: argb-glow 6s linear infinite;
+        }
+
+        @keyframes argb-glow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        .card-heading {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .card-heading h3 {
+            font-size: 20px;
+            font-weight: 900;
+            background: linear-gradient(90deg, #fff, #a78bfa, var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .campaign-timer {
+            font-size: 11px;
+            color: #38bdf8;
+            font-weight: 800;
+            margin-top: 6px;
+            text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+        }
+
+        /* ৩ জন বিজয়ীর থ্রিডি পডিয়াম */
+        .podium-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .podium-item {
+            flex: 1;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 18px;
+            padding: 16px 6px;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        /* ডায়মন্ড (১ম স্থান) - আল্ট্রা ARGB গ্লো */
+        .podium-item.first {
+            border: 2px solid var(--diamond);
+            transform: translateY(-12px);
+            background: radial-gradient(circle at top, rgba(0, 240, 255, 0.15), rgba(12, 10, 20, 0.9));
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.35);
+        }
+
+        /* গোল্ড (২য় স্থান) */
+        .podium-item.second {
+            border: 2px solid var(--gold);
+            transform: translateY(-4px);
+            background: radial-gradient(circle at top, rgba(255, 183, 0, 0.15), rgba(12, 10, 20, 0.9));
+            box-shadow: 0 0 25px rgba(255, 183, 0, 0.25);
+        }
+
+        /* সিলভার (৩য় স্থান) */
+        .podium-item.third {
+            border: 2px solid var(--silver);
+            background: radial-gradient(circle at top, rgba(226, 232, 240, 0.1), rgba(12, 10, 20, 0.9));
+            box-shadow: 0 0 20px rgba(226, 232, 240, 0.2);
+        }
+
+        .champion-avatar {
+            width: 52px !important;
+            height: 52px !important;
+            border-radius: 50% !important;
+            object-fit: cover !important;
+            display: block !important;
+            margin: 0 auto 8px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .podium-item.first .champion-avatar { 
+            width: 64px !important; 
+            height: 64px !important; 
+            border: 3px solid var(--diamond);
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+        .podium-item.second .champion-avatar { 
+            width: 58px !important; 
+            height: 58px !important; 
+            border: 2.5px solid var(--gold);
+            box-shadow: 0 0 15px var(--neon-gold);
+        }
+        .podium-item.third .champion-avatar { 
+            border: 2px solid var(--silver);
+            box-shadow: 0 0 15px rgba(255,255,255,0.4);
+        }
+
+        .rank-icon {
+            font-size: 18px;
+            margin-bottom: 4px;
+            font-weight: 900;
+        }
+
+        .champion-id {
+            font-size: 12px;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 2px;
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
+
+        .champion-refers {
+            font-size: 10px;
+            color: #cbd5e1;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        /* নিয়ন প্রাইজ ব্যাজ */
+        .prize-badge {
+            font-size: 11px;
+            font-weight: 900;
+            padding: 5px 8px;
+            border-radius: 8px;
+            display: block;
+            text-transform: uppercase;
+        }
+
+        .podium-item.first .prize-badge { 
+            background: rgba(0, 240, 255, 0.15);
+            border: 1px solid var(--diamond); 
+            color: var(--diamond); 
+            text-shadow: 0 0 10px var(--diamond);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+        }
+        .podium-item.second .prize-badge { 
+            background: rgba(255, 183, 0, 0.15);
+            border: 1px solid var(--gold); 
+            color: var(--gold); 
+            text-shadow: 0 0 10px var(--gold);
+            box-shadow: 0 0 15px rgba(255, 183, 0, 0.4);
+        }
+        .podium-item.third .prize-badge { 
+            background: rgba(226, 232, 240, 0.1);
+            border: 1px solid var(--silver); 
+            color: var(--silver); 
+            text-shadow: 0 0 10px var(--silver);
+            box-shadow: 0 0 15px rgba(226, 232, 240, 0.3);
+        }
+
+        /* নিচের প্রমোশন ও পুরস্কারের তথ্য বক্স */
+        .promo-info-box {
+            margin-top: 16px;
+            background: linear-gradient(145deg, rgba(12,10,20,0.9), rgba(25,18,40,0.8));
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .promo-title {
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--neon-gold);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-shadow: 0 0 8px rgba(255, 183, 0, 0.4);
+        }
+
+        .promo-text {
+            font-size: 11px;
+            color: #94a3b8;
+            line-height: 1.6;
+            font-weight: 600;
+        }
+
+        .promo-highlight {
+            color: var(--neon-blue);
+            font-weight: 800;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <!-- TOP HEADER -->
+    <header class="dashboard-header">
+        <a href="dashboard.html" class="back-btn" title="Back">←</a>
+        <div class="header-title" style="text-align: center;">
+            <strong>OKB CHAMPIONS HUB</strong>
+        </div>
+        <div class="header-logo">
+            <img src="https://i.postimg.cc/FzGmnmX4/myokbi.png" alt="OKB Logo">
+        </div>
+    </header>
+
+    <!-- প্রিমিয়াম মিটার কাউন্টার -->
+    <div class="meter-counter-container">
+        <div class="meter-label">⚡ লাইভ রেফারেল প্রোগ্রেস (২৪ ঘণ্টা) ⚡</div>
+        <div class="meter-display" id="progressMeter">
+            <div class="meter-digit">১</div>
+            <div class="meter-digit">৮</div>
+            <div class="meter-digit">৬</div>
+            <div class="meter-digit">০</div>
+            <div class="meter-digit">১</div>
+        </div>
+    </div>
+
+    <!-- টপ ৩ চ্যাম্পিয়ন পডিয়াম (ARGB Neon Glow) -->
+    <section class="champions-card">
+        <div class="card-heading">
+            <h3>👑 সাপ্তাহিক বিজয়ী 👑</h3>
+            <div class="campaign-timer" id="campaignTimer">ক্যাম্পেইন রোটেশন বাকি: ৭ দিন</div>
+        </div>
+
+        <div class="podium-container">
+            <!-- ২য় স্থান (গোল্ড থিম - ১০০,০০০ টাকা) -->
+            <div class="podium-item second">
+                <div class="rank-icon">🥈</div>
+                <img id="podium-2-img" src="https://i.postimg.cc/DySXjYGS/Screenshot-20261103-074954.jpg" alt="Winner 2" class="champion-avatar">
+                <div id="podium-2-id" class="champion-id">M102****34</div>
+                <div class="champion-refers">55 জন সফল রেফার</div>
+                <div class="prize-badge">১০০,০০০ ৳</div>
+            </div>
+
+            <!-- ১ ম স্থান (ডায়মন্ড থিম - ১৮০,০০০ টাকা) -->
+            <div class="podium-item first">
+                <div class="rank-icon" style="font-size: 22px;">👑</div>
+                <img id="podium-1-img" src="https://i.postimg.cc/nzzG2NWr/Screenshot-20261102-220506.jpg" alt="Winner 1" class="champion-avatar">
+                <div id="podium-1-id" class="champion-id">M102****88</div>
+                <div class="champion-refers" style="color: var(--neon-blue);">100 জন সফল রেফার</div>
+                <div class="prize-badge">১৮০,০০০ ৳</div>
+            </div>
+
+            <!-- ۳য় স্থান (সিলভার থিম - ৬০,০০০ টাকা) -->
+            <div class="podium-item third">
+                <div class="rank-icon">🥉</div>
+                <img id="podium-3-img" src="https://i.postimg.cc/XNBTbs8p/IMG-20261020-WA0004(1).jpg" alt="Winner 3" class="champion-avatar">
+                <div id="podium-3-id" class="champion-id">M102****71</div>
+                <div class="champion-refers">30 জন সফল রেফার</div>
+                <div class="prize-badge">৬০,০০০ ৳</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- প্রমোশন ও পুরস্কারের বিবরণী সেকশন -->
+    <div class="promo-info-box">
+        <div class="promo-title">
+            <span>💎</span> ক্যাম্পেইন ও পুরস্কারের নীতিমালা
+        </div>
+        <div class="promo-text">
+            প্রতিটি সাপ্তাহিক ক্যাম্পেইনে সর্বোচ্চ রেফারকারী <span class="promo-highlight">শীর্ষ ৩ জন বিজয়ী</span> সরাসরি ডায়মন্ড, গোল্ড এবং সিলভার ক্যাটাগরিতে পুরস্কৃত হন। প্রতি ৭ দিন পর পর লিডারবোর্ড রিসেট হয় এবং স্বয়ংক্রিয়ভাবে নতুন বিজয়ীদের নাম ও ছবি আপডেট করা হয়। পুরস্কারের অর্থ সরাসরি আপনার ওয়ালেটে বা নির্দিষ্ট মাধ্যমে প্রদান করা হবে।
+        </div>
+    </div>
+</div>
+
+<!-- JAVASCRIPT LOGIC -->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        let currentCount = 18601;
+        
+        function updateProgressMeter() {
+            const startDate = new Date();
+            startDate.setHours(0, 0, 0, 0);
+            const now = new Date();
+            const elapsedHours = Math.floor((now - startDate) / (1000 * 60 * 60));
+            
+            const displayCount = currentCount + elapsedHours;
+            const countStr = displayCount.toString().padStart(5, '0');
+            
+            const meterDisplay = document.getElementById("progressMeter");
+            meterDisplay.innerHTML = "";
+            
+            for (let i = 0; i < countStr.length; i++) {
+                const digitDiv = document.createElement("div");
+                digitDiv.className = "meter-digit";
+                digitDiv.innerText = countStr[i];
+                meterDisplay.appendChild(digitDiv);
+            }
+        }
+
+        function updateCampaignTimer() {
+            const now = new Date();
+            const daysLeft = 7 - (now.getDay() === 0 ? 7 : now.getDay());
+            const hoursLeft = 23 - now.getHours();
+            const minsLeft = 59 - now.getMinutes();
+
+            const timerEl = document.getElementById("campaignTimer");
+            if (timerEl) {
+                timerEl.innerText = `সাপ্তাহিক ক্যাম্পেইন রোটেশন বাকি: ${daysLeft} দিন ${hoursLeft} ঘণ্টা ${minsLeft} মিনিট`;
+            }
+        }
+
+        updateProgressMeter();
+        updateCampaignTimer();
+        setInterval(updateProgressMeter, 60000);
+    });
+</script>
+</body>
+</html>

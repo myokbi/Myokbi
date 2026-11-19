@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-body: 'DM Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --okb-primary: #059669;
+    --okb-primary-text: #ffffff;
+    --okb-accent: #d97706;
+    --okb-vault: #0b1220;
+    --okb-sidebar-text: #e2e8f0;
+    --okb-bg: #f3f5f8;
+    --okb-card: #ffffff;
+    --okb-border: #e2e8f0;
+    --okb-text: #0b1220;
+    --okb-muted: #64748b;
+    --okb-btn-radius: 12px;
+    --okb-card-radius: 16px;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: var(--okb-bg);
+    color: var(--okb-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+  .font-mono-num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  .surface-card {
+    background-color: var(--okb-card);
+    border: 1px solid var(--okb-border);
+    border-radius: var(--okb-card-radius);
+    box-shadow: 0 1px 2px rgba(11, 18, 32, 0.04);
+  }
+
+  .surface-vault {
+    background-color: var(--okb-vault);
+    color: #ffffff;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: var(--okb-card-radius);
+    box-shadow: 0 6px 20px -6px rgba(11, 18, 32, 0.35);
+  }
+
+  .input-atelier {
+    @apply w-full min-h-[44px] px-3.5 py-2.5 text-sm bg-slate-50/80 border border-slate-200 text-slate-900 placeholder:text-slate-400 transition-[border-color,background-color,box-shadow] duration-150 focus:outline-none focus:bg-white focus:ring-2;
+    border-radius: var(--okb-btn-radius);
+    --tw-ring-color: color-mix(in srgb, var(--okb-primary) 20%, transparent);
+  }
+
+  .input-atelier:focus {
+    border-color: var(--okb-primary);
+  }
+
+  /* Unified Tactile Button System driven by real-time theme tokens */
+  .btn-base {
+    @apply inline-flex items-center justify-center gap-2 font-semibold whitespace-nowrap shrink-0 select-none cursor-pointer transition-all duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.985] disabled:opacity-55 disabled:pointer-events-none;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 font-semibold whitespace-nowrap shrink-0 select-none cursor-pointer transition-all duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.985] disabled:opacity-55 disabled:pointer-events-none min-h-[44px] px-5 py-2.5 text-sm;
+    border-radius: var(--okb-btn-radius);
+    background-color: var(--okb-primary);
+    color: var(--okb-primary-text);
+    border: 1px solid color-mix(in srgb, var(--okb-primary) 80%, #000);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 2px 6px color-mix(in srgb, var(--okb-primary) 28%, transparent);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    filter: brightness(1.06);
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 font-semibold whitespace-nowrap shrink-0 select-none cursor-pointer transition-all duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2 active:scale-[0.985] disabled:opacity-55 disabled:pointer-events-none min-h-[44px] px-5 py-2.5 text-sm text-slate-950;
+    border-radius: var(--okb-btn-radius);
+    background: linear-gradient(to bottom, color-mix(in srgb, var(--okb-accent) 45%, #fff), var(--okb-accent));
+    border: 1px solid color-mix(in srgb, var(--okb-accent) 60%, #000);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 2px 6px color-mix(in srgb, var(--okb-accent) 25%, transparent);
+  }
+
+  .btn-obsidian {
+    @apply inline-flex items-center justify-center gap-2 font-semibold whitespace-nowrap shrink-0 select-none cursor-pointer transition-all duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 active:scale-[0.985] disabled:opacity-55 disabled:pointer-events-none min-h-[44px] px-5 py-2.5 text-sm text-white;
+    border-radius: var(--okb-btn-radius);
+    background-color: var(--okb-vault);
+    border: 1px solid color-mix(in srgb, var(--okb-vault) 85%, #fff);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 2px 6px rgba(11, 18, 32, 0.22);
+  }
+
+  .btn-obsidian:hover:not(:disabled) {
+    filter: brightness(1.15);
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 font-semibold whitespace-nowrap shrink-0 select-none cursor-pointer transition-all duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.985] disabled:opacity-55 disabled:pointer-events-none min-h-[42px] px-4 py-2 text-xs sm:text-sm text-slate-800 bg-white hover:bg-slate-50 border border-slate-300/90 hover:border-slate-400 shadow-[0_1px_2px_rgba(11,18,32,0.05)];
+    border-radius: var(--okb-btn-radius);
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 font-semibold whitespace-nowrap shrink-0 select-none cursor-pointer transition-all duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2 active:scale-[0.985] disabled:opacity-55 disabled:pointer-events-none min-h-[40px] px-3.5 py-2 text-xs text-white bg-gradient-to-b from-red-600 to-red-700 hover:from-red-500 hover:to-red-700 border border-red-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)];
+    border-radius: var(--okb-btn-radius);
+  }
+
+  .btn-sm {
+    @apply min-h-[38px] px-3.5 py-1.5 text-xs;
+    border-radius: max(8px, calc(var(--okb-btn-radius) - 4px));
+  }
+
+  .segment-track {
+    @apply grid gap-1 p-1 bg-slate-200/75 border border-slate-200;
+    border-radius: var(--okb-btn-radius);
+  }
+
+  .segment-btn {
+    @apply min-h-[40px] px-3.5 py-2 text-xs sm:text-sm font-semibold transition-all duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] whitespace-nowrap shrink-0 flex items-center justify-center gap-2 cursor-pointer;
+    border-radius: max(6px, calc(var(--okb-btn-radius) - 4px));
+  }
+
+  .segment-btn-active {
+    @apply bg-white text-slate-950 border border-slate-200/80 shadow-[0_1px_3px_rgba(11,18,32,0.08)];
+  }
+
+  .segment-btn-idle {
+    @apply text-slate-600 hover:text-slate-950 border border-transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

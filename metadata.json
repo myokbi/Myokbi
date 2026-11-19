@@ -1,0 +1,8 @@
+{
+  "name": "Remix Remix Myokbi Private Hub",
+  "description": "Private invite-only Myokbi workspace with GitHub-synced server backend and full website management dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

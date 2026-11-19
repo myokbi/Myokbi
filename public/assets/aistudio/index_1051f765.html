@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#c89b3c">
+    <meta name="description" content="OKB Login and Registration">
+    <title>OKB - Login & Registration</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/common.css">
+
+    <style>
+        :root {
+            --primary-gold: #c89b3c;
+            --primary-gold-dark: #a67c27;
+            --bg-white: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: rgba(200, 155, 60, 0.3);
+            --shadow-md: 0 10px 25px rgba(200, 155, 60, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-white);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .auth-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-gold);
+            margin-bottom: 10px;
+        }
+
+        .auth-header h2 {
+            margin: 0;
+            font-size: 20px;
+            color: var(--text-main);
+        }
+
+        .auth-header p {
+            margin: 4px 0 0;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .auth-tabs {
+            display: flex;
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+
+        .tab-btn.active {
+            background: #ffffff;
+            color: var(--primary-gold-dark);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .auth-form {
+            display: none;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .auth-form.active {
+            display: flex;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .input-group input {
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: #f8fafc;
+            font-size: 13px;
+            color: var(--text-main);
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-gold);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(200, 155, 60, 0.15);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-gold-dark));
+            color: #ffffff;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 6px;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .error-msg {
+            color: #ef4444;
+            font-size: 11px;
+            text-align: center;
+            margin: 0;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="auth-container">
+    <div class="auth-card">
+
+        <div class="auth-header">
+            <img src="https://i.postimg.cc/FzGmnmX4/myokbi.png" alt="OKB Logo" class="auth-logo">
+            <h2>MY OKBI</h2>
+            <p>Work, Earn & Rk It</p>
+        </div>
+
+        <div class="auth-tabs">
+            <button type="button" class="tab-btn active" id="loginTabBtn" onclick="switchTab('login')">Login</button>
+            <button type="button" class="tab-btn" id="registerTabBtn" onclick="switchTab('register')">Registration</button>
+        </div>
+
+        <form id="loginForm" class="auth-form active">
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" id="loginEmail" placeholder="Enter your email" required>
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter your password" required>
+            </div>
+            <p id="loginError" class="error-msg"></p>
+            <button type="submit" class="submit-btn" id="loginSubmitBtn">Login Now</button>
+        </form>
+
+        <form id="registerForm" class="auth-form">
+            <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" id="regName" placeholder="Enter your name" required>
+            </div>
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" id="regEmail" placeholder="Enter your email" required>
+            </div>
+            <div class="input-group">
+                <label>Phone Number</label>
+                <input type="tel" id="regPhone" placeholder="01XXXXXXXXX" required>
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="regPassword" placeholder="Create a password" required>
+            </div>
+            <div class="input-group">
+                <label>Referral Code (Optional)</label>
+                <input type="text" id="regReferral" placeholder="Enter refer code if any">
+            </div>
+            <p id="regError" class="error-msg"></p>
+            <button type="submit" class="submit-btn" id="regSubmitBtn">Complete Registration</button>
+        </form>
+
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, set, get, query, orderByChild, equalTo, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+        databaseURL: "https://okb2-ee83b-default-rtdb.firebaseio.com/"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    window.switchTab = function(tab) {
+        const loginForm = document.getElementById("loginForm");
+        const registerForm = document.getElementById("registerForm");
+        const loginBtn = document.getElementById("loginTabBtn");
+        const regBtn = document.getElementById("registerTabBtn");
+
+        if (tab === 'login') {
+            loginForm.classList.add("active");
+            registerForm.classList.remove("active");
+            loginBtn.classList.add("active");
+            regBtn.classList.remove("active");
+        } else {
+            if (localStorage.getItem("okb_device_registered")) {
+                alert("Security Alert: Only one account registration is allowed per device!");
+                return;
+            }
+            registerForm.classList.add("active");
+            loginForm.classList.remove("active");
+            regBtn.classList.add("active");
+            loginBtn.classList.remove("active");
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const regForm = document.getElementById("registerForm");
+        regForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            if (localStorage.getItem("okb_device_registered")) {
+                alert("This device has already been used to register an account.");
+                return;
+            }
+
+            const regBtn = document.getElementById("regSubmitBtn");
+            regBtn.disabled = true;
+            regBtn.innerText = "Processing...";
+
+            const name = document.getElementById("regName").value.trim();
+            const email = document.getElementById("regEmail").value.trim();
+            const phone = document.getElementById("regPhone").value.trim();
+            const password = document.getElementById("regPassword").value;
+            const referralCode = document.getElementById("regReferral").value.trim();
+            
+            const userId = "M" + Math.floor(100000 + Math.random() * 900000);
+            const myReferCode = "OKB-" + userId;
+
+            try {
+                let validReferredBy = "";
+
+                if (referralCode !== "") {
+                    const usersRef = ref(db, 'users');
+                    const referQuery = query(usersRef, orderByChild("referCode"), equalTo(referralCode));
+                    const referSnapshot = await get(referQuery);
+
+                    if (referSnapshot.exists()) {
+                        let inviterKey = "";
+                        referSnapshot.forEach((childSnap) => {
+                            inviterKey = childSnap.key;
+                        });
+
+                        if (inviterKey) {
+                            validReferredBy = referralCode;
+                            await runTransaction(ref(db, 'users/' + inviterKey), (inviterData) => {
+                                if (inviterData) {
+                                    inviterData.referralBonus = (inviterData.referralBonus || 0) + 10;
+                                    inviterData.balance = (inviterData.balance || 0) + 10;
+                                }
+                                return inviterData;
+                            });
+                        }
+                    }
+                }
+
+                const userData = {
+                    id: userId,
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    password: password,
+                    referCode: myReferCode,
+                    referredBy: validReferredBy,
+                    level: "Data Entry / Marketing",
+                    balance: 0.00,
+                    todayEarn: 0.00,
+                    completedTasks: 0,
+                    referralBonus: 0.00,
+                    status: "Active",
+                    photoUrl: "assets/icons/profile.png"
+                };
+
+                await set(ref(db, 'users/' + userId), userData);
+
+                localStorage.setItem("okb_device_registered", "true");
+                localStorage.setItem("okbUserId", userId);
+
+                alert("Registration Successful! Your ID is: " + userId);
+                window.location.href = "dashboard.html";
+
+            } catch (error) {
+                console.error("Reg Error:", error);
+                document.getElementById("regError").style.display = "block";
+                document.getElementById("regError").innerText = "Error: " + error.message;
+                regBtn.disabled = false;
+                regBtn.innerText = "Complete Registration";
+            }
+        });
+
+        const loginForm = document.getElementById("loginForm");
+        loginForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            const loginBtn = document.getElementById("loginSubmitBtn");
+            loginBtn.disabled = true;
+            loginBtn.innerText = "Logging in...";
+
+            const email = document.getElementById("loginEmail").value.trim();
+            const password = document.getElementById("loginPassword").value;
+
+            try {
+                const usersRef = ref(db, 'users');
+                const snapshot = await get(usersRef);
+
+                if (snapshot.exists()) {
+                    let matchedUser = null;
+                    snapshot.forEach((childSnapshot) => {
+                        const user = childSnapshot.val();
+                        if (user.email && user.email.toLowerCase() === email.toLowerCase()) {
+                            matchedUser = user;
+                        }
+                    });
+
+                    if (matchedUser && matchedUser.password === password) {
+                        localStorage.setItem("okbUserId", matchedUser.id);
+                        alert("Login Successful!");
+                        window.location.href = "dashboard.html";
+                    } else {
+                        document.getElementById("loginError").style.display = "block";
+                        document.getElementById("loginError").innerText = "Invalid Email or Password!";
+                        loginBtn.disabled = false;
+                        loginBtn.innerText = "Login Now";
+                    }
+                } else {
+                    document.getElementById("loginError").style.display = "block";
+                    document.getElementById("loginError").innerText = "No users found!";
+                    loginBtn.disabled, loginBtn.disabled = false;
+                    loginBtn.innerText = "Login Now";
+                }
+            } catch (error) {
+                console.error("Login Error:", error);
+                document.getElementById("loginError").style.display = "block";
+                document.getElementById("loginError").innerText = "Connection error. Try again.";
+                loginBtn.disabled = false;
+                loginBtn.innerText = "Login Now";
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

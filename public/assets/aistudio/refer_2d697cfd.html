@@ -1,0 +1,808 @@
+<!doctype html>
+<html lang="bn">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#c89b3c">
+  <title>Refer & Earn - OKB</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/common.css">
+
+  <style>
+    :root {
+      --primary-gold: #c89b3c;
+      --primary-gold-dark: #a67c27;
+      --gold-light: #fff7df;
+      --bg-white: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border-color: rgba(200, 155, 60, 0.35);
+      --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 10px 25px rgba(200, 155, 60, 0.15);
+      --success: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-white);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding-bottom: 50px;
+      overflow-x: hidden;
+    }
+
+    .refer-app {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    /* HEADER */
+    .refer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(135deg, #ffffff, #fff7df);
+      padding: 12px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 16px;
+    }
+
+    .back-btn {
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: 50%;
+      text-decoration: none;
+      color: var(--primary-gold-dark);
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .back-btn:hover {
+      background: var(--primary-gold);
+      color: #fff;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      color: var(--primary-gold-dark);
+      font-size: 16px;
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--primary-gold);
+      color: #fff;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+    }
+
+    .header-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    /* HERO SECTION */
+    .refer-hero {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      color: #fff;
+      border-radius: 22px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+      border: 2px solid var(--primary-gold);
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .refer-hero::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 120px;
+      height: 120px;
+      background: rgba(200, 155, 60, 0.2);
+      border-radius: 50%;
+      filter: blur(20px);
+    }
+
+    .hero-icon {
+      font-size: 36px;
+      background: rgba(200, 155, 60, 0.2);
+      width: 60px;
+      height: 60px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid var(--primary-gold);
+      flex-shrink: 0;
+    }
+
+    .refer-hero h1 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    .refer-hero p {
+      font-size: 13px;
+      color: #cbd5e1;
+      margin-bottom: 4px;
+    }
+
+    .refer-hero small {
+      font-size: 10px;
+      color: var(--primary-gold);
+      font-weight: 700;
+    }
+
+    /* GLASS CARD & SECTIONS */
+    .glass-card, .code-card, .stats-card, .commission-card, .reward-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .title-icon {
+      font-size: 18px;
+    }
+
+    .section-title h2 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .section-title small {
+      font-size: 10px;
+      color: var(--success);
+      font-weight: 700;
+    }
+
+    /* USER DETAILS */
+    .user-details {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      background: #f8fafc;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.03);
+      font-size: 12px;
+    }
+
+    .detail-row span {
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .detail-row strong {
+      color: var(--text-main);
+      font-weight: 700;
+    }
+
+    .status-active {
+      color: var(--success) !important;
+    }
+
+    /* CODE GRID */
+    .code-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .code-card {
+      margin-bottom: 0;
+      text-align: center;
+      position: relative;
+    }
+
+    .code-icon {
+      font-size: 24px;
+      margin-bottom: 6px;
+    }
+
+    .code-card h3 {
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      color: var(--text-main);
+    }
+
+    .code-box {
+      display: flex;
+      gap: 8px;
+      background: #f1f5f9;
+      padding: 6px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 8px;
+    }
+
+    .code-box input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 6px 10px;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--primary-gold-dark);
+      outline: none;
+      text-align: center;
+    }
+
+    .action-btn {
+      background: linear-gradient(135deg, var(--primary-gold), var(--primary-gold-dark));
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(200, 155, 60, 0.3);
+      transition: 0.2s;
+    }
+
+    .action-btn:active {
+      transform: scale(0.96);
+    }
+
+    .code-card p {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* STATS CARD */
+    .stats-card {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      text-align: center;
+    }
+
+    .stat-box {
+      background: #f8fafc;
+      padding: 12px 6px;
+      border-radius: 14px;
+      border: 1px solid var(--border-color);
+    }
+
+    .stat-icon {
+      font-size: 18px;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .stat-box strong {
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--primary-gold-dark);
+    }
+
+    /* COMMISSION HIGHLIGHT CARD (750 BDT) */
+    .commission-card {
+      background: linear-gradient(135deg, #fffbeb, #fef3c7);
+      border: 1.5px solid var(--primary-gold);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
+    }
+
+    .commission-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .commission-icon {
+      font-size: 28px;
+      background: #fff;
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid var(--primary-gold);
+    }
+
+    .commission-left h3 {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .commission-left p {
+      font-size: 11px;
+      color: var(--primary-gold-dark);
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .commission-badge {
+      background: var(--primary-gold-dark);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    /* 20 REFER REWARD GATE CARD */
+    .reward-card {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      color: #fff;
+      border: 2px solid var(--primary-gold);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reward-card::after {
+      content: 'PROMO GATE';
+      position: absolute;
+      right: -25px;
+      top: 15px;
+      background: var(--primary-gold);
+      color: #fff;
+      font-size: 8px;
+      font-weight: 900;
+      padding: 3px 25px;
+      transform: rotate(45deg);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .gift-icon {
+      font-size: 32px;
+      background: rgba(200, 155, 60, 0.2);
+      width: 50px;
+      height: 50px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid var(--primary-gold);
+      flex-shrink: 0;
+    }
+
+    .reward-content {
+      flex: 1;
+      padding: 0 12px;
+    }
+
+    .reward-content h2 {
+      font-size: 14px;
+      font-weight: 800;
+      color: #fde047;
+      margin-bottom: 2px;
+    }
+
+    .reward-content p {
+      font-size: 11px;
+      color: #cbd5e1;
+      margin-bottom: 2px;
+    }
+
+    .reward-content strong {
+      font-size: 11px;
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .reward-status {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid var(--primary-gold);
+      padding: 6px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #fde047;
+      text-align: center;
+      min-width: 60px;
+    }
+
+    /* REFER USERS LIST */
+    .refer-users {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+
+    .refer-user-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f8fafc;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .user-info-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--gold-light);
+      border: 1px solid var(--primary-gold);
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+    }
+
+    .user-name-id {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .user-sub-id {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .user-reward-amount {
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--success);
+    }
+
+    .loading-box {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="refer-app">
+
+    <!-- HEADER -->
+    <header class="refer-header">
+      <a href="dashboard.html" class="back-btn" id="backBtn" aria-label="Back">←</a>
+      <div class="brand">
+        <div class="brand-icon"></div>
+        <span>MyOkbi</span>
+      </div>
+      <div class="header-title">Refer & Earn</div>
+    </header>
+
+    <!-- REFER HERO -->
+    <section class="refer-hero">
+      <div class="hero-icon">👥</div>
+      <div>
+        <h1>বন্ধুদের রেফার করুন</h1>
+        <p>প্রতি সফল রেফারে নিশ্চিত আয় করুন</p>
+        <small>যত বেশি রেফার → তত বেশি বোনাস → বড় উপার্জন</small>
+      </div>
+    </section>
+
+    <!-- USER DETAILS -->
+    <section class="glass-card">
+      <div class="section-title">
+        <span class="title-icon">👤</span>
+        <h2>ইউজার ডিটেলস</h2>
+      </div>
+      <div class="user-details">
+        <div class="detail-row">
+          <span>User UID</span>
+          <strong id="userUid">Loading...</strong>
+        </div>
+        <div class="detail-row">
+          <span>User Name</span>
+          <strong id="userName">Loading...</strong>
+        </div>
+        <div class="detail-row">
+          <span>Email</span>
+          <strong id="userEmail">Loading...</strong>
+        </div>
+        <div class="detail-row">
+          <span>Phone Number</span>
+          <strong id="userPhone">Loading...</strong>
+        </div>
+        <div class="detail-row">
+          <span>Account Status</span>
+          <strong class="status-active" id="userStatus">● Active</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- REFER CODE SECTION -->
+    <section class="code-grid">
+      <!-- MY REFER CODE -->
+      <div class="code-card">
+        <div class="code-icon">🎁</div>
+        <h3>My Refer Code</h3>
+        <div class="code-box">
+          <input id="myReferCode" type="text" readonly value="Loading..." aria-label="My Refer Code">
+          <button type="button" id="copyReferBtn" class="action-btn">Copy</button>
+        </div>
+        <p id="copyMessage">আপনার Refer Code অন্য সদস্যকে দিন।</p>
+      </div>
+
+      <!-- NEW MEMBER REFER CODE -->
+      <div class="code-card">
+        <div class="code-icon">🤝</div>
+        <h3>New Member Refer Code</h3>
+        <div class="code-box">
+          <input id="newReferCode" type="text" placeholder="Refer code paste করুন" autocomplete="off" aria-label="New Member Refer Code">
+          <button type="button" id="pasteReferBtn" class="action-btn">Paste</button>
+        </div>
+        <p>নতুন সদস্য Registration করার সময় এই code ব্যবহার করবে।</p>
+      </div>
+    </section>
+
+    <!-- REFER STATISTICS -->
+    <section class="stats-card">
+      <div class="stat-box">
+        <span class="stat-icon">👥</span>
+        <span class="stat-label">Total Refer</span>
+        <strong id="totalRefer">0</strong>
+      </div>
+      <div class="stat-box">
+        <span class="stat-icon">👑</span>
+        <span class="stat-label">Successful</span>
+        <strong id="premiumRefer">0</strong>
+      </div>
+      <div class="stat-box">
+        <span class="stat-icon">💰</span>
+        <span class="stat-label">Per Refer</span>
+        <strong>750 ৳</strong>
+      </div>
+    </section>
+
+    <!-- 750 BDT COMMISSION PER REFER -->
+    <section class="commission-card">
+      <div class="commission-left">
+        <div class="commission-icon">💎</div>
+        <div>
+          <h3>রেফার কমিশন বোনাস</h3>
+          <p>প্রতি সফল রেফারেল = ৭৫০ টাকা (750 BDT)</p>
+        </div>
+      </div>
+      <div class="commission-badge">750 ৳</div>
+    </section>
+
+    <!-- 20 REFER REWARD GATE -->
+    <section class="reward-card" id="rewardCard">
+      <div class="gift-icon">🎁</div>
+      <div class="reward-content">
+        <h2>২০ জন রেফার স্পেশাল গিফট</h2>
+        <p>২০ জন সফল রেফার সম্পন্ন করলে থাকছে</p>
+        <strong>বিশেষ প্রমোশন ও লিডারশিপ পুরস্কার!</strong>
+      </div>
+      <div class="reward-status" id="rewardStatus">0 / 20</div>
+    </section>
+
+    <!-- MY REFER USERS LIST -->
+    <section class="glass-card">
+      <div class="section-title">
+        <span class="title-icon">📋</span>
+        <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+          <h2>আমার রেফারের তালিকা</h2>
+          <small id="liveStatus" style="color:var(--primary-gold-dark);">● লাইভ সিঙ্ক</small>
+        </div>
+      </div>
+
+      <div id="referUsers" class="refer-users">
+        <div class="loading-box">
+          <div class="loader"></div>
+          <p>আপনার রেফারের ডাটা লোড হচ্ছে...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <span>🔒 Secure</span>
+      <span>•</span>
+      <span>Rk It job-</span>
+      <span>•</span>
+      <span>MyOKB Center</span>
+    </footer>
+
+  </main>
+
+  <!-- FIREBASE & JAVASCRIPT LOGIC -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+      databaseURL: "https://okb2-ee83b-default-rtdb.firebaseio.com/"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const userId = localStorage.getItem("okbUserId");
+
+      if (!userId) {
+        alert("দয়া করে প্রথমে লগইন করুন!");
+        window.location.href = "dashboard.html";
+        return;
+      }
+
+      // ইউজার ডেটা ফেচ ও ফিল আপ করা
+      const userRef = ref(db, 'users/' + userId);
+      onValue(userRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          document.getElementById("userUid").innerText = data.id || userId;
+          document.getElementById("userName").innerText = data.name || "User Name";
+          document.getElementById("userEmail").innerText = data.email || "user@example.com";
+          document.getElementById("userPhone").innerText = data.phone || "+880 1XXXXXXXXX";
+
+          // নিজস্ব রেফার কোড (যদি না থাকে অটো জেনারেট বা UID সেট হবে)
+          const myCode = data.referCode || data.id || "OKB" + userId.slice(-5);
+          document.getElementById("myReferCode").value = myCode;
+        }
+      });
+
+      // রেফারের তালিকা এবং স্ট্যাটিস্টিকস রিয়েল-টাইম লোড
+      const allUsersRef = ref(db, 'users');
+      onValue(allUsersRef, (snapshot) => {
+        let totalReferredCount = 0;
+        const referListContainer = document.getElementById("referUsers");
+        referListContainer.innerHTML = "";
+
+        if (snapshot.exists()) {
+          let htmlContent = "";
+          let myReferCodeVal = document.getElementById("myReferCode").value;
+
+          snapshot.forEach((childSnap) => {
+            const uData = childSnap.val();
+            // চেক করা হচ্ছে এই ইউজার বর্তমান ইউজারের রেফার কোড ব্যবহার করেছে কিনা
+            if (uData.referredBy && (uData.referredBy === userId || uData.referredBy === myReferCodeVal)) {
+              totalReferredCount++;
+              htmlContent += `
+                <div class="refer-user-item">
+                  <div class="user-info-left">
+                    <div class="user-avatar">👤</div>
+                    <div>
+                      <div class="user-name-id">${uData.name || "Active Member"}</div>
+                      <div class="user-sub-id">${uData.id || "ID: --"}</div>
+                    </div>
+                  </div>
+                  <div class="user-reward-amount">+750 ৳</div>
+                </div>
+              `;
+            }
+          });
+
+          if (htmlContent === "") {
+            referListContainer.innerHTML = `<div class="loading-box"><p>এখনো কোনো রেফার করা হয়নি। আপনার কোডটি শেয়ার করুন!</p></div>`;
+          } else {
+            referListContainer.innerHTML = htmlContent;
+          }
+
+          // স্ট্যাটস আপডেট
+          document.getElementById("totalRefer").innerText = totalReferredCount;
+          document.getElementById("premiumRefer").innerText = totalReferredCount; // সফল রেফার হিসেবে কাউন্ট হবে
+
+          // ২০ জন রেফারের প্রমোশন গেট প্রোগ্রেস আপডেট
+          const progressCount = Math.min(totalReferredCount, 20);
+          document.getElementById("rewardStatus").innerText = `${progressCount} / 20`;
+          
+          if(totalReferredCount >= 20) {
+            document.getElementById("rewardCard").style.borderColor = "#10b981";
+            document.getElementById("rewardCard").querySelector("h2").innerText = "🎉 ২০ জন রেফার সম্পন্ন!";
+          }
+        }
+      });
+
+      // কপি বাটন ফাংশনালিটি
+      document.getElementById("copyReferBtn").addEventListener("click", () => {
+        const copyInput = document.getElementById("myReferCode");
+        copyInput.select();
+        copyInput.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(copyInput.value);
+        
+        const msg = document.getElementById("copyMessage");
+        msg.innerText = "✅ সফলভাবে কপি হয়েছে!";
+        msg.style.color = "var(--success)";
+        setTimeout(() => {
+          msg.innerText = "আপনার Refer Code অন্য সদস্যকে দিন।";
+          msg.style.color = "var(--text-muted)";
+        }, 2500);
+      });
+
+      // পেস্ট বাটন ফাংশনালিটি
+      document.getElementById("pasteReferBtn").addEventListener("click", async () => {
+        try {
+          const text = await navigator.clipboard.readText();
+          document.getElementById("newReferCode").value = text;
+        } catch (err) {
+          alert("ক্লিপবোর্ড থেকে পেস্ট করা সম্ভব হয়নি। ম্যানুয়ালি টাইপ করুন।");
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

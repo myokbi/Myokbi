@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="bn">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" id="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+        <meta name="theme-color" content="#c89b3c">
+        <title>OKB Agent Withdrawal & History</title>
+        
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+        <!-- CSS Styling -->
+        <style>
+            :root {
+                --primary-gold: #c89b3c;
+                --primary-gold-dark: #a67c27;
+                --bg-white: #f8fafc;
+                --card-bg: #ffffff;
+                --text-main: #1e293b;
+                --text-muted: #64748b;
+                --border-color: rgba(200, 155, 60, 0.3);
+                --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+                --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.08);
+            }
+
+            body {
+                font-family: 'Inter', sans-serif;
+                background-color: var(--bg-white);
+                color: var(--text-main);
+                margin: 0;
+                padding: 0;
+                padding-bottom: 90px;
+            }
+
+            .dashboard {
+                max-width: 480px;
+                margin: 0 auto;
+                padding: 16px;
+            }
+
+            /* হেডার ডিজাইন */
+            .dashboard-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background: linear-gradient(135deg, #ffffff, #f1f5f9);
+                padding: 12px 16px;
+                border-radius: 16px;
+                border: 1px solid var(--border-color);
+                box-shadow: var(--shadow-sm);
+                margin-bottom: 16px;
+            }
+
+            .back-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 36px;
+                height: 36px;
+                background: #fff;
+                border: 1px solid var(--border-color);
+                border-radius: 50%;
+                text-decoration: none;
+                color: var(--primary-gold-dark);
+                font-size: 16px;
+                font-weight: bold;
+                transition: 0.2s;
+            }
+
+            .back-btn:hover {
+                background: var(--primary-gold);
+                color: #fff;
+                border-color: var(--primary-gold);
+            }
+
+            .header-title strong {
+                font-size: 15px;
+                color: var(--primary-gold-dark);
+            }
+
+            /* ইউজার ব্যালেন্স কার্ড */
+            .balance-card {
+                background: linear-gradient(135deg, rgba(200, 155, 60, 0.15), #ffffff);
+                border: 1px solid var(--primary-gold);
+                border-radius: 16px;
+                padding: 16px;
+                text-align: center;
+                margin-bottom: 16px;
+                box-shadow: var(--shadow-sm);
+            }
+
+            .balance-card p {
+                margin: 0;
+                font-size: 12px;
+                color: var(--text-muted);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .balance-card h2 {
+                margin: 6px 0 0;
+                font-size: 24px;
+                color: var(--primary-gold-dark);
+            }
+
+            /* ফর্ম কার্ড */
+            .form-card {
+                background: var(--card-bg);
+                border: 1px solid var(--border-color);
+                border-radius: 16px;
+                padding: 20px;
+                box-shadow: var(--shadow-sm);
+                margin-bottom: 20px;
+            }
+
+            .form-group {
+                margin-bottom: 16px;
+            }
+
+            .form-group label {
+                display: block;
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--text-main);
+                margin-bottom: 6px;
+            }
+
+            .form-control {
+                width: 100%;
+                padding: 12px;
+                border: 1px solid var(--border-color);
+                border-radius: 10px;
+                font-size: 14px;
+                background: #f8fafc;
+                color: var(--text-main);
+                box-sizing: border-box;
+                outline: none;
+                transition: 0.2s;
+            }
+
+            .form-control:focus {
+                border-color: var(--primary-gold);
+                background: #fff;
+            }
+
+            /* প্রিমিয়াম এজেন্ট ইনফো ভিউ কার্ড */
+            .agent-info-card {
+                background: linear-gradient(145deg, #ffffff, #fdfbf7);
+                border: 2px solid var(--primary-gold);
+                padding: 14px;
+                border-radius: 12px;
+                margin-bottom: 16px;
+                display: none;
+                box-shadow: var(--shadow-sm);
+            }
+
+            .agent-info-card h4 {
+                margin: 0 0 6px 0;
+                font-size: 13px;
+                color: var(--primary-gold-dark);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                border-bottom: 1px dashed var(--border-color);
+                padding-bottom: 4px;
+            }
+
+            .agent-detail-row {
+                display: flex;
+                justify-content: space-between;
+                font-size: 13px;
+                margin-top: 6px;
+            }
+
+            .agent-detail-row span {
+                color: var(--text-muted);
+            }
+
+            .agent-detail-row strong {
+                color: var(--text-main);
+            }
+
+            .submit-btn {
+                width: 100%;
+                background: linear-gradient(135deg, var(--primary-gold), var(--primary-gold-dark));
+                color: #fff;
+                border: none;
+                padding: 14px;
+                border-radius: 12px;
+                font-size: 15px;
+                font-weight: 700;
+                cursor: pointer;
+                transition: 0.2s;
+                box-shadow: var(--shadow-sm);
+            }
+
+            .submit-btn:hover {
+                opacity: 0.9;
+                transform: translateY(-1px);
+            }
+
+            /* উইথড্র হিস্ট্রি সেকশন */
+            .history-card {
+                background: var(--card-bg);
+                border: 1px solid var(--border-color);
+                border-radius: 16px;
+                padding: 16px;
+                box-shadow: var(--shadow-sm);
+            }
+
+            .history-card h3 {
+                margin: 0 0 12px 0;
+                font-size: 15px;
+                color: var(--text-main);
+                border-bottom: 1px solid var(--border-color);
+                padding-bottom: 8px;
+            }
+
+            .history-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background: #f8fafc;
+                border: 1px solid var(--border-color);
+                padding: 10px 12px;
+                border-radius: 10px;
+                margin-bottom: 8px;
+                font-size: 13px;
+            }
+
+            .status-badge {
+                padding: 3px 8px;
+                border-radius: 6px;
+                font-size: 11px;
+                font-weight: 700;
+            }
+
+            .status-pending { background: rgba(234, 179, 8, 0.15); color: #ca8a04; }
+            .status-approved { background: rgba(34, 197, 94, 0.15); color: #16a34a; }
+            .status-rejected { background: rgba(239, 68, 68, 0.15); color: #dc2626; }
+        </style>
+    </head>
+    <body>
+
+      <main class="dashboard">
+
+          <!-- TOP HEADER -->
+          <header class="dashboard-header">
+              <a href="dashboard.html" class="back-btn">←</a>
+              <div class="header-title" style="text-align: center;">
+                  <strong>এজেন্ট উইথড্র সেন্টার</strong>
+              </div>
+              <div style="width: 36px;"></div>
+          </header>
+
+          <!-- LIVE BALANCE CARD -->
+          <div class="balance-card">
+              <p>আপনার মেইন ব্যালেন্স</p>
+              <h2 id="userLiveBalance">0.00 ৳</h2>
+          </div>
+
+          <!-- WITHDRAW FORM -->
+          <div class="form-card">
+              <form id="agentWithdrawForm">
+                  <!-- জেলা সিলেকশন (৬৪ জেলা) -->
+                  <div class="form-group">
+                      <label for="districtSelect">আপনার জেলা নির্বাচন করুন</label>
+                      <select id="districtSelect" class="form-control" required>
+                          <option value="">জেলা সিলেক্ট করুন</option>
+                      </select>
+                  </div>
+
+                  <!-- নির্ধারিত জেলার অ্যাসাইনড এজেন্ট শো করার প্রিমিয়াম ভিউ কার্ড -->
+                  <div id="agentInfoCard" class="agent-info-card">
+                      <h4>নিযুক্ত এলাকার তথ্য</h4>
+                      <div class="agent-detail-row">
+                          <span>নির্বাচিত জেলা:</span>
+                          <strong id="viewDistrictName">--</strong>
+                      </div>
+                      <div class="agent-detail-row">
+                          <span>দায়িত্বরত এজেন্ট:</span>
+                          <strong id="viewAgentName" style="color: var(--primary-gold-dark);">--</strong>
+                      </div>
+                  </div>
+
+                  <!-- পেমেন্ট মেথড -->
+                  <div class="form-group">
+                      <label for="methodSelect">উইথড্র মাধ্যম</label>
+                      <select id="methodSelect" class="form-control" required>
+                          <option value="bKash">বিকাশ (bKash)</option>
+                          <option value="Nagad">নগদ (Nagad)</option>
+                          <option value="Rocket">রকেট (Rocket)</option>
+                      </select>
+                  </div>
+
+                  <!-- অ্যাকাউন্ট নাম্বার -->
+                  <div class="form-group">
+                      <label for="accountNumber">একাউন্ট নাম্বার (পেমেন্ট নম্বর)</label>
+                      <input type="tel" id="accountNumber" class="form-control" placeholder="যেমন: 017xxxxxxxx" required>
+                  </div>
+
+                  <!-- অ্যামাউন্ট -->
+                  <div class="form-group">
+                      <label for="withdrawAmount">টাকার পরিমাণ (BDT)</label>
+                      <input type="number" id="withdrawAmount" class="form-control" placeholder="সর্বনিম্ন ৫০০ ৳" min="500" required>
+                  </div>
+
+                  <!-- সাবমিট বাটন -->
+                  <button type="submit" class="submit-btn">উইথড্র কনফার্ম করুন</button>
+              </form>
+          </div>
+
+          <!-- RECENT WITHDRAW HISTORY -->
+          <div class="history-card">
+              <h3>আপনার উইথড্র স্ট্যাটাস</h3>
+              <div id="withdrawHistoryList">
+                  <p style="font-size: 13px; color: var(--text-muted); text-align: center; margin: 10px 0;">কোনো উইথড্র হিস্ট্রি নেই</p>
+              </div>
+          </div>
+
+      </main>
+
+      <!-- JAVASCRIPT & FIREBASE REALTIME LOGIC -->
+      <script type="module">
+          import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+          import { getDatabase, ref, onValue, update, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+          // ফায়ারবেস কনফিগারেশন ও ডাটাবেস ইউআরএল
+          const firebaseConfig = {
+              databaseURL: "https://okb2-ee83b-default-rtdb.firebaseio.com/"
+          };
+
+          const app = initializeApp(firebaseConfig);
+          const db = getDatabase(app);
+
+          // বাংলাদেশের ৬৪ জেলা এবং নির্দিষ্ট এজেন্ট তালিকা
+          const districtAgentList = [
+              { district: "ঢাকা", agent: "Tanvir Ahmed" },
+              { district: "ফরিদপুর", agent: "Sabrina Sultana" },
+              { district: "গাজীপুর", agent: "Mehedi Hasan" },
+              { district: "গোপালগঞ্জ", agent: "Nusrat Jahan" },
+              { district: "কিশোরগঞ্জ", agent: "Rakibul Islam" },
+              { district: "মাদারীপুর", agent: "Farhana Yasmin" },
+              { district: "মানিকগঞ্জ", agent: "Shariful Alam" },
+              { district: "মুন্সিগঞ্জ", agent: "Sumaiya Akter" },
+              { district: "নারায়ণগঞ্জ", agent: "Nazmul Huda" },
+              { district: "নরসিংদী", agent: "Tania Akter" },
+              { district: "রাজবাড়ী", agent: "Imran Hossain" },
+              { district: "শরীয়তপুর", agent: "Mst. Lima Khatun" },
+              { district: "টাঙ্গাইল", agent: "Ashraful Islam" },
+              { district: "বগুড়া", agent: "Moniruzzaman" },
+              { district: "জয়পুরহাট", agent: "Sadia Afrin" },
+              { district: "নওগাঁ", agent: "Nazifa Tabassum" },
+              { district: "নাটোর", agent: "Al-Amin Hossain" },
+              { district: "চাঁপাইনবাবগঞ্জ", agent: "Fahmida Sultana" },
+              { district: "পাবনা", agent: "Golam Rabbani" },
+              { district: "রাজশাহী", agent: "Sanjida Akter" },
+              { district: "দিনাজপুর", agent: "Monowar Hossain" },
+              { district: "গাইবান্ধা", agent: "Roksana Parvin" },
+              { district: "কুড়িগ্রাম", agent: "Habibur Rahman" },
+              { district: "লালমনিরহাট", agent: "Jannatul Ferdous" },
+              { district: "নীলফামারী", agent: "Mizanur Rahman" },
+              { district: "পঞ্চগড়", agent: "Sharmin Akter" },
+              { district: "রংপুর", agent: "Ariful Islam" },
+              { district: "ঠাকুরগাঁও", agent: "Mahbuba Akter" },
+              { district: "বাগেরহাট", agent: "Sheikh Faruk" },
+              { district: "চুয়াডাঙ্গা", agent: "Rokeya Khatun" },
+              { district: "যশোর", agent: "Sohel Rana" },
+              { district: "ঝিনাইদহ", agent: "Nazma Khatun" },
+              { district: "খুলনা", agent: "Imtiaz Ahmed" },
+              { district: "কুষ্টিয়া", agent: "Anika Tabassum" },
+              { district: "মাগুরা", agent: "Saiful Islam" },
+              { district: "মেহেরপুর", agent: "Salma Sultana" },
+              { district: "নড়াইল", agent: "Zahirul Islam" },
+              { district: "সাতক্ষীরা", agent: "Mosammat Rina" },
+              { district: "বরগুনা", agent: "Sohag Mia" },
+              { district: "বরিশাল", agent: "Tanjina Akter" },
+              { district: "ভোলা", agent: "Monir Hossain" },
+              { district: "ঝালকাঠি", agent: "Priya Rani" },
+              { district: "পটুয়াখালী", agent: "Kamrul Islam" },
+              { district: "পিরোজপুর", agent: "Sabiha Sultana" },
+              { district: "বান্দরবান", agent: "Mang Tho" },
+              { district: "ব্রাহ্মণবাড়িয়া", agent: "Zobair Ahmed" },
+              { district: "চাঁদপুর", agent: "Mehnaz Tabassum" },
+              { district: "চট্টগ্রাম", agent: "Farhan Tanvir" },
+              { district: "কুমিল্লা", agent: "Taslima Nasrin" },
+              { district: "কক্সবাজার", agent: "Rashedul Islam" },
+              { district: "ফেনী", agent: "Afroza Sultana" },
+              { district: "খাগড়াছড়ি", agent: "Ujjal Tripura" },
+              { district: "লক্ষ্মীপুর", agent: "Belal Hossain" },
+              { district: "নোয়াখালী", agent: "Nazia Sultana" },
+              { district: "রাঙ্গামাটি", agent: "Chakma Sujon" },
+              { district: "হবিগঞ্জ", agent: "Shah Paran" },
+              { district: "মৌলভীবাজার", agent: "Nazmun Nahar" },
+              { district: "সুনামগঞ্জ", agent: "Badrul Alam" },
+              { district: "সিলেট", agent: "Zahid Hasan" },
+              { district: "শেরপুর", agent: "Shamima Nasrin" },
+              { district: "ময়মনসিংহ", agent: "Nazmul Haque" },
+              { district: "নেত্রকোণা", agent: "Moumita Sarker" },
+              { district: "জামালপুর", agent: "Rafiqul Islam" }
+          ];
+
+          document.addEventListener("DOMContentLoaded", () => {
+              const userId = localStorage.getItem("okbUserId") || "default_user";
+             
+              const districtSelect = document.getElementById("districtSelect");
+              const agentInfoCard = document.getElementById("agentInfoCard");
+              const viewDistrictName = document.getElementById("viewDistrictName");
+              const viewAgentName = document.getElementById("viewAgentName");
+              const userLiveBalanceElem = document.getElementById("userLiveBalance");
+
+              // ১. ড্রপডাউনে ৬৪ জেলা যুক্ত করা
+              districtAgentList.forEach((item, index) => {
+                  const option = document.createElement("option");
+                  option.value = index;
+                  option.textContent = item.district;
+                  districtSelect.appendChild(option);
+              });
+
+              // ২. জেলা সিলেক্ট করলে সুন্দর এজেন্ট ইনফো ভিউ কার্ড শো করা
+              districtSelect.addEventListener("change", (e) => {
+                  const selectedIndex = e.target.value;
+                  if (selectedIndex !== "") {
+                      const matchedData = districtAgentList[selectedIndex];
+                      viewDistrictName.textContent = matchedData.district;
+                      viewAgentName.textContent = matchedData.agent;
+                      agentInfoCard.style.display = "block";
+                  } else {
+                      agentInfoCard.style.display = "none";
+                      viewDistrictName.textContent = "--";
+                      viewAgentName.textContent = "--";
+                  }
+              });
+
+              // ৩. ফায়ারবেস রিয়েলটাইমে ইউজারের লাইভ ব্যালেন্স চেক করা
+              let currentUserBalance = 0;
+              const userRef = ref(db, `users/${userId}`);
+              onValue(userRef, (snapshot) => {
+                  if (snapshot.exists()) {
+                      const userData = snapshot.val();
+                      currentUserBalance = Number(userData.balance || 0);
+                      userLiveBalanceElem.textContent = currentUserBalance.toFixed(2) + " ৳";
+                  } else {
+                      userLiveBalanceElem.textContent = "0.00 ৳";
+                  }
+              });
+
+              // ৪. উইথড্র রিকোয়েস্ট সাবমিট ও ব্যালেন্স কাটার রিয়েলটাইম লজিক
+              const form = document.getElementById("agentWithdrawForm");
+              form.addEventListener("submit", async (e) => {
+                  e.preventDefault();
+
+                  const selectedIndex = districtSelect.value;
+                  if (selectedIndex === "") {
+                      alert("দয়া করে আপনার জেলা নির্বাচন করুন।");
+                      return;
+                  }
+
+                  const districtData = districtAgentList[selectedIndex];
+                  const district = districtData.district;
+                  const agentName = districtData.agent;
+                  
+                  const method = document.getElementById("methodSelect").value;
+                  const accountNumber = document.getElementById("accountNumber").value;
+                  const amount = Number(document.getElementById("withdrawAmount").value);
+
+                  if (amount < 500) {
+                      alert("সর্বনিম্ন ৫০০ টাকা উইথড্র করতে পারবেন।");
+                      return;
+                  }
+
+                  // ব্যালেন্স পর্যাপ্ত আছে কিনা যাচাই
+                  if (currentUserBalance < amount) {
+                      alert("আপনার একাউন্টে পর্যাপ্ত ব্যালেন্স নেই! (Insufficient Balance)");
+                      return;
+                  }
+
+                  try {
+                      // ইউজারের মেইন ব্যালেন্স থেকে কাঙ্ক্ষিত টাকা কেটে আপডেট করা
+                      const newBalance = currentUserBalance - amount;
+                      await update(userRef, { balance: newBalance });
+
+                      // অ্যাডমিন প্যানেলে রিকোয়েস্ট পাঠানো (Pending স্ট্যাটাসসহ)
+                      const withdrawData = {
+                          userId: userId,
+                          district: district,
+                          agentName: agentName,
+                          method: method,
+                          accountNumber: accountNumber,
+                          amount: amount,
+                          status: "Pending", // Pending, Approved, Rejected
+                          timestamp: Date.now()
+                      };
+
+                      const adminWithdrawRef = ref(db, `adminRequests/withdrawals`);
+                      await push(adminWithdrawRef, withdrawData);
+
+                      alert(`সফলভাবে উইথড্র রিকোয়েস্ট সাবমিট হয়েছে!\nজেলা: ${district}\nএজেন্ট: ${agentName}\nমাধ্যমে: ${method}\nমেইন অ্যাডমিন এটি যাচাই করে পেমেন্ট পাঠিয়ে দেবেন।`);
+                      form.reset();
+                      agentInfoCard.style.display = "none";
+
+                  } catch (error) {
+                      console.error("Withdraw Error:", error);
+                      alert("উইথড্র করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+                  }
+              });
+
+              // ৫. ইউজারের নিজস্ব উইথড্র হিস্ট্রি ও স্ট্যাটাস রিয়েলটাইমে লোড করা
+              const historyListElem = document.getElementById("withdrawHistoryList");
+              const withdrawalsRef = ref(db, `adminRequests/withdrawals`);
+              
+              onValue(withdrawalsRef, (snapshot) => {
+                  historyListElem.innerHTML = "";
+                  if (snapshot.exists()) {
+                      let hasHistory = false;
+                      snapshot.forEach((childSnapshot) => {
+                          const data = childSnapshot.val();
+                          if (data.userId === userId) {
+                              hasHistory = true;
+                              let statusClass = "status-pending";
+                              let statusText = "Pending (পেন্ডিং)";
+                              
+                              if (data.status === "Approved") {
+                                  statusClass = "status-approved";
+                                  statusText = "Approved (অনুমোদিত)";
+                              } else if (data.status === "Rejected") {
+                                  statusClass = "status-rejected";
+                                  statusText = "Rejected (বাতিল)";
+                              }
+
+                              const historyHTML = `
+                                  <div class="history-item">
+                                      <div>
+                                          <strong>${data.amount} ৳</strong> (${data.method})<br>
+                                          <span style="font-size: 11px; color: var(--text-muted);">জেলা: ${data.district} | এজেন্ট: ${data.agentName}</span>
+                                      </div>
+                                      <span class="status-badge ${statusClass}">${statusText}</span>
+                                  </div>
+                              `;
+                              historyListElem.innerHTML += historyHTML;
+                          }
+                      });
+
+                      if (!hasHistory) {
+                          historyListElem.innerHTML = `<p style="font-size: 13px; color: var(--text-muted); text-align: center; margin: 10px 0;">কোনো উইথড্র হিস্ট্রি নেই</p>`;
+                      }
+                  } else {
+                      historyListElem.innerHTML = `<p style="font-size: 13px; color: var(--text-muted); text-align: center; margin: 10px 0;">কোনো উইথড্র হিস্ট্রি নেই</p>`;
+                  }
+              });
+          });
+      </script>
+    </body>
+</html>
